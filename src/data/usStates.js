@@ -1,4 +1,4 @@
-import stateInf from '../stateInf';
+import stateInf from './stateInf';
 
 const getStates = stateInf => {
   let usStates = [];

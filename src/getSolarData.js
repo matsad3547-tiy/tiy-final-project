@@ -1,4 +1,4 @@
-import stateInf from './stateInf';
+import stateInf from './data/stateInf';
 
 const getCoords = (usState, arr) => {
 	let found = arr.find ( (obj) => {
