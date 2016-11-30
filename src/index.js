@@ -5,12 +5,15 @@ import './index.css';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import getSolarData from './getSolarData';
+import dataService from './dataService';
 
 
 // console.log('data :' getSolarData('Alaska'));
-let usState = 'Florida';
+let usState = 'Utah';
 
-getSolarData(usState)
+dataService(usState);
+
+getSolarData(usState);
 
 const reducerFun = (state = {}, action, usState) => {
   if (state === undefined) state = {};
@@ -25,3 +28,20 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+
+store.dispatch({type: 'GET_SOLAR_DATA'})
+
+const loading = (state = false, action) => {
+	switch (action.type) {
+	case 'GET_SOLAR_DATA':
+		return true
+	case 'GET_SOLAR_DATA_RECEIVED':
+		return false
+	case 'GET_SOLAR_DATA_ERROR':
+		return false
+	default:
+		return state
+	}
+}
+
+export default loading

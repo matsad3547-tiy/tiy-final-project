@@ -20,13 +20,10 @@ const getSolarData = (usState) => {
 	    return response.json();
 	  }).then (function(data) {
 	    console.log('data', data.outputs);
+			return data.outputs;
 	  }).catch (function(err) {
 	    console.log('err', err);
 	  })
-
-	  console.log('async test');
-
 }
-// url (required), options (optional)
 
 export default getSolarData;
