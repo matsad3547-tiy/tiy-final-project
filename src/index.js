@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import getSolarData from './getSolarData';
+import {createStore, applyMiddleware, compose} from 'redux'
+// import getSolarData from './getSolarData';
 import dataService from './dataService';
+import combinedReducers from './reducers/combinedReducers'
 
 
 // console.log('data :' getSolarData('Alaska'));
@@ -13,14 +14,17 @@ let usState = 'Utah';
 
 dataService(usState);
 
-getSolarData(usState);
+// getSolarData(usState);
 
-const reducerFun = (state = {}, action, usState) => {
-  if (state === undefined) state = {};
-  return state;
-}
+// const reducerFun = (state = {}, action, usState) => {
+//   if (state === undefined) state = {};
+//   return state;
+// }
 
-let store = createStore(reducerFun)
+let store = createStore(combinedReducers,{}, compose(applyMiddleware(dataService), window.devToolsExtension
+	? window.devToolsExtension() : f => f))
+
+// let store = createStore(reducerFun)
 
 ReactDOM.render(
   <Provider store={store}>
@@ -29,7 +33,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-store.dispatch({type: 'GET_SOLAR_DATA'})
+store.dispatch({type: 'GET_SOLAR_DATA', state: 'Florida'})
 
 const loading = (state = false, action) => {
 	switch (action.type) {

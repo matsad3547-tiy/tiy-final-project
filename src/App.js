@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-// import stateInf from './stateInf';
-// import logo from './logo.svg';
-// import $ from 'jquery';
 import './App.css';
 import usStates from './data/usStates'
 import months from './data/months'
 // import Header from './components/Header'
 // const usStates = getStates(stateInf)
-
-console.log(months);
-
 
 class App extends Component {
   render() {
@@ -52,6 +46,7 @@ const Input = () => (
 const Graph = () => (
   <div className="graph">
     This is where the display goes
+
   </div>
 )
 
@@ -63,22 +58,47 @@ const Graph = () => (
 //   });
 // });
 
+// onSubmit={e => {
+//     e.preventDefault()
+//     if (!input.value.trim()) {
+//       return
+//     }
+//     dispatch(addTodo(input.value))
+//     input.value = ''
+//   }}
+
 const USStateSelect = () => (
   <div className="select">
-    <h3>Select a State</h3>
-    <button className="select">Select a State</button>
-    <select className="dropdown">
-      <option value="open">States</option>
-      {usStates.map( (usState, i) => <option key={i} value={usState}>{usState}</option>)}
-    </select>
+    <form >
+      <h3>Select a State</h3>
+      <button type="submit" className="select">Select a State</button>
+      <select className="dropdown">
+        <option value="open">States</option>
+        {usStates.map( (usState, i) => <option key={i} value={usState}>{usState}</option>)}
+      </select>
+    </form>
   </div>
 )
 
 const TimeIntervalSelect = () => (
-  <div className="select">
+  <div>
     <h3>Select a Time Interval</h3>
-    <button className="select">Yearly</button>
-    <button className="select">Seasonally</button>
+    <Annually />
+    <Seasonally />
+    <Monthly />
+    <Daily />
+  </div>
+)
+
+const Annually = () => (
+  <form className="select">
+    <button type="submit">Annually</button>
+  </form>
+)
+
+const Seasonally = () => (
+  <form className="select">
+    <button type="submit">Seasonally</button>
     <select className="dropdown">
       <option value="open">Select a Season</option>
       <option key={'sp'} value="spring">Spring</option>
@@ -86,22 +106,24 @@ const TimeIntervalSelect = () => (
       <option key={'fa'} value="fall">Fall</option>
       <option key={'wi'} value="winter">Winter</option>
     </select>
-    <button className="select">Monthly</button>
+  </form>
+)
+
+const Monthly = () => (
+  <form className="select">
+    <button type="submit" >Monthly</button>
     <select className="dropdown">
       <option value="open">Select a Month</option>
       {months.map( (month, i) => <option key={i} value={month}>{month}</option>)}
     </select>
-    <button className="select">Daily</button>
+  </form>
+)
+
+const Daily = () => (
+  <form className="select">
+    <button type="submit">Daily</button>
     <select className="dropdown">
       <option value="today">Today</option>
     </select>
-  </div>
+  </form>
 )
-
-// const TimeIntervalSelect = () => (
-//   <div className="select">
-//     Select a time interval
-//   </div>
-// )
-
-// <img src={logo} className="App-logo" alt="logo" />

@@ -17,48 +17,31 @@ const getSolarKey = usState => {
   return solarKey;
 }
 
-const dataService = (store, usState) => next => action => {
-  let solarKey = getSolarKey(usState);
-  /*
-  Pass all actions through by default
-  */
-  next(action)
-  switch (action.type) {
-  case 'GET_SOLAR_DATA':
-    /*
-    In case we receive an action to send an API request, send the appropriate request
-    */
-    request
-      .get(solarKey)
-      .end((err, res) => {
-        if (err) {
-          /*
-          in case there is any error, dispatch an action containing the error
-          */
-          return next({
-            type: 'GET_SOLAR_DATA_ERROR',
-            err
-          })
-        }
-        const data = JSON.parse(res.text)
-        console.log('DS data: ', data);
-        /*
-        Once data is received, dispatch an action telling the application
-        that data was received successfully, along with the parsed data
-        */
-        next({
-          type: 'GET_SOLAR_DATA_RECEIVED',
-          data
-        })
-      })
-    break
-  /*
-  Do nothing if the action does not interest us
-  */
-  default:
-    break
-  }
-
+const dataService = store => next => action => {
+	next(action)
+	console.log(action);
+	switch (action.type) {
+	case 'GET_SOLAR_DATA':
+		request
+			.get(getSolarKey(action.state))
+			.end((err, res) => {
+				if (err) {
+					return next({
+						type: 'GET_SOLAR_DATA_ERROR',
+						err
+					})
+				}
+				const data = JSON.parse(res.text)
+				console.log(data.outputs);
+				next({
+					type: 'GET_SOLAR_DATA_RECEIVED',
+					data
+				})
+			})
+		break
+	default:
+		break
+	}
 };
 
 export default dataService

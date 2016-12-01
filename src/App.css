@@ -28,3 +28,7 @@ li {
   border: 1px solid black;
   width: 10em;
 }
+
+.select {
+  display: inline;
+}
