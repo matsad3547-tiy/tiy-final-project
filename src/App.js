@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import usStates from './data/usStates'
 import months from './data/months'
+import { changeUSState } from './actions/actions'
 // import Header from './components/Header'
 // const usStates = getStates(stateInf)
 
@@ -50,35 +51,31 @@ const Graph = () => (
   </div>
 )
 
-// $(document).ready(function() {
-//   $('.select').click(function(){
-//     $('.selected').slideDown(400, function(){
-//       $(this).click(function() {$('.selected').slideUp(400)});
-//     });
-//   });
-// });
+const USStateSelect = ({ dispatch }) => {
+  let input;
+  const onSubmit = e => {
+    e.preventDefault()
+    if (!input.value.trim()) {
+      return
+    }
+    dispatch(changeUSState(input.value))
+  }
 
-// onSubmit={e => {
-//     e.preventDefault()
-//     if (!input.value.trim()) {
-//       return
-//     }
-//     dispatch(addTodo(input.value))
-//     input.value = ''
-//   }}
+  return (
+    <div className="select">
+      <form onSubmit={onSubmit}>
+        <h3>Select a State</h3>
+        <button type="submit" className="select">Select a State</button>
+        <select className="dropdown" ref={node => input = node}>
+          <option>States</option>
+          {usStates.map( (usState, i) => <option key={i} value={usState}>{usState}</option>)}
+        </select>
+      </form>
+    </div>
+  )
+}
 
-const USStateSelect = () => (
-  <div className="select">
-    <form >
-      <h3>Select a State</h3>
-      <button type="submit" className="select">Select a State</button>
-      <select className="dropdown">
-        <option value="open">States</option>
-        {usStates.map( (usState, i) => <option key={i} value={usState}>{usState}</option>)}
-      </select>
-    </form>
-  </div>
-)
+
 
 const TimeIntervalSelect = () => (
   <div>

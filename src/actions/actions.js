@@ -1,22 +1,22 @@
-let nextTodoId = 0
-export const addTodo = (text) => {
+// let nextTodoId = 0
+export const changeUSState = (input) => {
+  console.log('action ', input);
   return {
-    type: 'ADD_TODO',
-    id: nextTodoId++,
-    text
+    type: 'GET_SOLAR_DATA',
+    usState: input
   }
 }
 
-export const setVisibilityFilter = (filter) => {
-  return {
-    type: 'SET_VISIBILITY_FILTER',
-    filter
-  }
-}
-
-export const toggleTodo = (id) => {
-  return {
-    type: 'TOGGLE_TODO',
-    id
-  }
-}
+// export const setVisibilityFilter = (filter) => {
+//   return {
+//     type: 'SET_VISIBILITY_FILTER',
+//     filter
+//   }
+// }
+//
+// export const toggleTodo = (id) => {
+//   return {
+//     type: 'TOGGLE_TODO',
+//     id
+//   }
+// }

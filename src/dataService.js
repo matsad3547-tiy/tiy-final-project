@@ -10,6 +10,7 @@ const getCoords = (usState, arr) => {
 }
 
 const getSolarKey = usState => {
+	console.log(usState);
 	let coords = getCoords(usState, stateInf);
 	let lat = coords[0]
 	let lon = coords[1]
@@ -23,7 +24,7 @@ const dataService = store => next => action => {
 	switch (action.type) {
 	case 'GET_SOLAR_DATA':
 		request
-			.get(getSolarKey(action.state))
+			.get(getSolarKey(action.usState))
 			.end((err, res) => {
 				if (err) {
 					return next({
