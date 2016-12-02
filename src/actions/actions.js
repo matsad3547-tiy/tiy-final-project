@@ -1,4 +1,3 @@
-// let nextTodoId = 0
 export const changeUSState = (input) => {
   console.log('action ', input);
   return {

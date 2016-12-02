@@ -10,7 +10,6 @@ const getCoords = (usState, arr) => {
 }
 
 const getSolarKey = usState => {
-	console.log(usState);
 	let coords = getCoords(usState, stateInf);
 	let lat = coords[0]
 	let lon = coords[1]
