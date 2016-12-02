@@ -7,11 +7,7 @@ import {createStore, applyMiddleware, compose} from 'redux'
 import dataService from './dataService';
 import combinedReducers from './reducers/combinedReducers'
 
-const initState = {
-  usState: 'Utah'
-}
-
-let store = createStore(combinedReducers,initState, compose(applyMiddleware(dataService), window.devToolsExtension
+let store = createStore(combinedReducers,{}, compose(applyMiddleware(dataService), window.devToolsExtension
 	? window.devToolsExtension() : f => f))
 
 ReactDOM.render(
@@ -21,4 +17,8 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-store.dispatch({type: 'GET_SOLAR_DATA', usState: 'Florida'})
+store.dispatch({
+  type: 'GET_SOLAR_DATA',
+  usState: 'Utah',
+  timeInterval: 'daily'
+})

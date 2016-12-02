@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import {months} from './data/constants'
-// import usStates from './data/usStates'
-// import { changeUSState } from './actions/actions'
+// import {months} from './data/constants'
 import USStateSelect from './containers/USStateSelect'
+import Annually from './containers/Annually'
+import Seasonally from './containers/Seasonally'
+// import {Annually, Seasonally, Monthly, Daily} from './containers/timeInterval'
+// import Annually from './containers/Annually'
 // import Header from './components/Header'
 
 class App extends Component {
@@ -51,75 +53,66 @@ const Graph = () => (
   </div>
 )
 
-// const USStateSelect = ({ dispatch }) => {
-//   let input;
-//   const onSubmit = e => {
-//     e.preventDefault()
-//     if (!input.value.trim()) {
-//       return
-//     }
-//     dispatch(changeUSState(input.value))
-//   }
-//
-//   return (
-//     <div className="select">
-//       <form onSubmit={onSubmit}>
-//         <h3>Select a State</h3>
-//         <button type="submit" className="select">Select a State</button>
-//         <select className="dropdown" ref={node => input = node}>
-//           <option>States</option>
-//           {usStates.map( (usState, i) => <option key={i} value={usState}>{usState}</option>)}
-//         </select>
-//       </form>
-//     </div>
-//   )
-// }
-// USStateSelect = connect()(USStateSelect)
-
 const TimeIntervalSelect = () => (
   <div>
     <h3>Select a Time Interval</h3>
     <Annually />
     <Seasonally />
-    <Monthly />
-    <Daily />
   </div>
 )
+// <Monthly />
+// <Daily />
 
-const Annually = () => (
-  <form className="select">
-    <button type="submit">Annually</button>
-  </form>
-)
+// const Annually = ({dispatch}) => {
+//   // let input;
+//   // const onSubmit = e => {
+//   //   e.preventDefault()
+//   //   if (!input.value.trim()) {
+//   //     return
+//   //   }
+//   //   dispatch(changeUSState(input.value))
+//   // }
+//
+//   return (
+//   <form >
+//     <button type="submit" value="annually">Annually</button>
+//   </form>
+// )}
 
-const Seasonally = () => (
-  <form className="select">
-    <button type="submit">Seasonally</button>
-    <select className="dropdown">
-      <option value="open">Select a Season</option>
-      <option key={'sp'} value="spring">Spring</option>
-      <option key={'su'} value="summer">Summer</option>
-      <option key={'fa'} value="fall">Fall</option>
-      <option key={'wi'} value="winter">Winter</option>
-    </select>
-  </form>
-)
-
-const Monthly = () => (
-  <form className="select">
-    <button type="submit" >Monthly</button>
-    <select className="dropdown">
-      <option value="open">Select a Month</option>
-      {months.map( (month, i) => <option key={i} value={month}>{month}</option>)}
-    </select>
-  </form>
-)
-
-const Daily = () => (
-  <form className="select">
-    <button type="submit">Daily</button>
-    <select className="dropdown">
-      <option value="today">Today</option>
-    </select>
-  </form>
-)
+// const Annually = () => (
+//   <form >
+//     <button type="submit" value="annually">Annually</button>
+//   </form>
+// )
+//
+// const Seasonally = () => (
+//   <form className="select">
+//     <button type="submit">Seasonally</button>
+//     <select className="dropdown">
+//       <option value="open">Select a Season</option>
+//       <option key={'sp'} value="spring">Spring</option>
+//       <option key={'su'} value="summer">Summer</option>
+//       <option key={'fa'} value="fall">Fall</option>
+//       <option key={'wi'} value="winter">Winter</option>
+//     </select>
+//   </form>
+// )
+//
+// const Monthly = () => (
+//   <form className="select">
+//     <button type="submit" >Monthly</button>
+//     <select className="dropdown">
+//       <option value="open">Select a Month</option>
+//       {months.map( (month, i) => <option key={i} value={month}>{month}</option>)}
+//     </select>
+//   </form>
+// )
+//
+// const Daily = () => (
+//   <form className="select">
+//     <button type="submit">Daily</button>
+//     <select className="dropdown">
+//       <option value="today">Today</option>
+//     </select>
+//   </form>
+// )

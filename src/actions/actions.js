@@ -1,8 +1,15 @@
 export const changeUSState = (input) => {
-  console.log('action ', input);
   return {
     type: 'GET_SOLAR_DATA',
     usState: input
+  }
+}
+
+export const changeTimeInterval = (state, input) => {
+  return {
+    type: 'GET_SOLAR_DATA',
+    // usState: state.usState,
+    timeInterval: input
   }
 }
 
