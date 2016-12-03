@@ -1,17 +1,19 @@
-export const changeUSState = (input) => {
+export const changeUSState = (usState) => {
   return {
     type: 'GET_SOLAR_DATA',
-    usState: input
+    usState
   }
 }
 
-export const changeTimeInterval = (state, input) => {
+export const changeTimeInterval = (timeInterval) => {
+  // console.log(state);
   return {
-    type: 'GET_SOLAR_DATA',
-    // usState: state.usState,
-    timeInterval: input
+    type: 'SET_TIME_INTERVAL',
+    timeInterval
   }
 }
+
+// export const
 
 // export const setVisibilityFilter = (filter) => {
 //   return {
