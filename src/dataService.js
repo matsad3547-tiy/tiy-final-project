@@ -37,7 +37,7 @@ const dataService = store => next => action => {
 				console.log(data.outputs);
 				next({
 					type: 'GET_SOLAR_DATA_RECEIVED',
-					data: data
+					data: data.outputs
 				})
 			})
 		break

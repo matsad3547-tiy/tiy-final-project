@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {usStates} from '../data/constants'
+import { usStates } from '../data/constants'
 import { changeUSState } from '../actions/actions'
 
 let USStateSelect = ({ dispatch }) => {
