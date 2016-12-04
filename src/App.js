@@ -45,21 +45,6 @@ const Input = () => (
     <TimeIntervalSelect />
   </div>
 )
-//
-// const Graph = () => {
-//
-//   const disp = (state) => {
-//     return state.usState;
-//   }
-//   let currentUsState = disp(store.getState())
-//
-// return (
-//   <div className="graph">
-//     This is where the display goes
-//     {currentUsState}
-//   </div>
-// )
-// }
 
 const TimeIntervalSelect = () => (
   <div>

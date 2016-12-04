@@ -9,3 +9,5 @@ const getStates = stateInf => {
 export const usStates = getStates(stateInf);
 
 export const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+export const seasons = ['spring', 'summer', 'fall', 'winter'];
