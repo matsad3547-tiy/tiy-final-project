@@ -4,6 +4,7 @@ import USStateSelect from './containers/USStateSelect'
 import Annually from './containers/Annually'
 import Seasonally from './containers/Seasonally'
 import Monthly from './containers/Monthly'
+import Graph from './components/Graph'
 
 // import Header from './components/Header'
 
@@ -44,13 +45,21 @@ const Input = () => (
     <TimeIntervalSelect />
   </div>
 )
-
-const Graph = () => (
-  <div className="graph">
-    This is where the display goes
-
-  </div>
-)
+//
+// const Graph = () => {
+//
+//   const disp = (state) => {
+//     return state.usState;
+//   }
+//   let currentUsState = disp(store.getState())
+//
+// return (
+//   <div className="graph">
+//     This is where the display goes
+//     {currentUsState}
+//   </div>
+// )
+// }
 
 const TimeIntervalSelect = () => (
   <div>
