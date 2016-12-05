@@ -4,7 +4,7 @@ import USStateSelect from './containers/USStateSelect'
 import Annually from './containers/Annually'
 import Seasonally from './containers/Seasonally'
 import Monthly from './containers/Monthly'
-import Graph from './components/Graph'
+import Display from './components/Display'
 
 // import Header from './components/Header'
 
@@ -31,7 +31,7 @@ const Header = () => (
 const Body = () => (
   <div className="body">
     <Input />
-    <Graph />
+    <Display />
   </div>
 )
 

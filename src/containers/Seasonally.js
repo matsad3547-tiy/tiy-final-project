@@ -26,8 +26,3 @@ return (
 
 Seasonally = connect()(Seasonally)
 export default Seasonally
-
-// <option value="spring">Spring</option>
-// <option value="summer">Summer</option>
-// <option value="fall">Fall</option>
-// <option value="winter">Winter</option>

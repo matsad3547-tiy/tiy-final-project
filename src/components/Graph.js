@@ -1,52 +1,103 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { months, seasons } from '../data/constants'
+import  {getCurrentState, select}  from '../data/sharedFunctions'
+import { months, seasons, monthObjs } from '../data/constants'
+import rd3 from 'react-d3'
 
-const getCurrentState = (state) => {
-  return {
-    usState: state.usState,
-    timeInterval: state.timeInterval,
-    data: state.data
+//Utah Data
+const annualData = {
+  'apr': 6.63,
+  'aug': 7.54,
+  'dec': 3.75,
+  'feb': 4.45,
+  'jan': 3.63,
+  'jul': 8.43,
+  'jun': 8.96,
+  'mar': 6.2,
+  'may': 7.65,
+  'nov': 5.08,
+  'oct': 6.73,
+  'sep': 7.69
+}
+
+// console.log(months);
+// console.log(monthObjs);
+
+const getMonthAbvrs = (monthObjs) => {
+  let abvrs = []
+  monthObjs.map( (obj) => {
+    for (let key in obj) {
+      abvrs.push(obj[key])
+    }
+  })
+  return abvrs;
+}
+
+// console.log(getMonthAbvrs(monthObjs));
+
+const xyAssigner = (obj) => {
+  let arr = []
+  for (let key in obj) {
+    let newObj = {}
+    newObj.x = key
+    newObj.y = obj[key]
+    arr.push(newObj)
   }
+  return arr
 }
 
-const select = (timeInt) => {
-  if (months.includes(timeInt)) return 'monthly';
-  if (seasons.includes(timeInt)) return 'seasonally';
-  if (timeInt === 'annually') return 'annually';
-}
+// console.log(getMonthAbvrs(monthObjs));
 
-const getGraphTitle = (currentState) => {
+// const sortData = (data) => {
+//   let abvrs = getMonthAbvrs(monthObjs);
+//   abvrs.map ( abv => {
+//     if (abv)
+//   })
+// }
 
-  let timeInt = currentState.timeInterval;
-  let usState = currentState.usState;
-  let selector = select(timeInt);
 
-  switch (selector) {
-    case 'annually':
-      return 'Here is the annual solar energy intensity for ' + usState;
 
-    case 'seasonally':
-      return 'Here is the solar energy intensity for ' + usState + ' in the ' + timeInt;
+const getGraphData = (currentState) => {
+  // let timeInt = currentState.timeInterval;
+  // let data = '';
+  // let dataPromise = currentState.data.avg_dni
+  // dataPromise.then( (d) => console.log('annual data: ', d.annual))
 
-    case 'monthly':
-    return 'Here is the solar energy intensity for ' + usState + ' in ' + timeInt;
-
-    default:
-    return 'Please select a time interval';
+  let data = currentState.data.avg_dni
+  if (data !== undefined) {
+    console.log('monthly data:', data.monthly);
   }
+  // else console.log('data: ', data);
+  // let selector = select(timeInt);
+  // let dataArr = [];
+
+  // console.log(Object.values(data));
+
+  // switch (selector)
+  //   case 'annually':
+  //   dataArr = data
+  //
+  //
+  //
+  //   default:
+  //   return 'There is no data to display'
+  //
+  //
+  return 42;
 }
+
 
 const Graph = (state) => {
 
   let currentState = getCurrentState(state)
-  let title = getGraphTitle(currentState)
+  let displayData = getGraphData(currentState)
 
   return (
     <div className="graph">
-      {title}
+      Graph goes here
     </div>
   )
 }
+
 
 export default connect(getCurrentState)(Graph)
