@@ -31,7 +31,7 @@ const Display = (state) => {
 
   return (
     <div className="graph">
-      {title} 
+      {title}
       <Graph />
     </div>
   )

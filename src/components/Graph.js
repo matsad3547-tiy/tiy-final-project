@@ -124,6 +124,7 @@ const parseGraphData = (dataArr, timeInt) => {
 }
 
 var AreaChart = rd3.AreaChart
+// var LineChart = rd3.LineChart
 
 
 const Graph = (state) => {
@@ -133,10 +134,23 @@ const Graph = (state) => {
   let displayData = parseGraphData(fullData, currentState.timeInterval)
   console.log('display data:', displayData);
 
+  let areaData = [
+    {
+      name: 'solarData',
+      // values: displayData
+      values: [ {x: 1, y: 3.63}, {x: 2, y: 4.45}, {x: 3, y: 6.2}, {x: 4, y: 6.63},{x: 5, y: 7.65}, {x: 6, y: 8.96}, {x: 7, y: 8.43}, {x: 8, y: 7.54}, {x: 9, y: 7.69}, {x: 10, y: 6.73}, {x: 11, y: 5.08}, {x: 12, y: 3.75} ]
+    }
+]
+  // console.log('area data:', areaData);
+
   return (
     <div className="graph">
-      Graph goes here
-
+      <AreaChart
+        data={areaData}
+        width={800}
+        height={300}
+        xAxisTickInterval={{unit: 'inches', interval: 1}}
+        />
     </div>
   )
 }
