@@ -19,7 +19,7 @@ let USStateSelect = ({ dispatch }) => {
         <h3>Select a State</h3>
         <button type="submit" className="select">Select a State</button>
         <select className="dropdown" ref={node => input = node}>
-          <option>States</option>
+          <option value="">States</option>
           {usStates.map( (usState, i) => <option key={i} value={usState}>{usState}</option>)}
         </select>
       </form>

@@ -36,19 +36,19 @@ const getSeasonMonths = (season) => {
   let arrOfMonths = []
   switch (season) {
     case 'spring':
-      arrOfMonths = [3, 4, 5, 6]
+      arrOfMonths = ['mar', 'apr', 'may']
       return arrOfMonths
 
     case 'summer':
-      arrOfMonths = [6, 7, 8, 9]
+      arrOfMonths = ['jun', 'jul', 'aug']
       return arrOfMonths
 
     case 'fall':
-      arrOfMonths = [9, 10, 11, 12]
+      arrOfMonths = ['sep', 'oct', 'nov']
       return arrOfMonths
 
     case 'winter':
-      arrOfMonths = [12, 1, 2, 3]
+      arrOfMonths = ['dec', 'jan', 'feb']
       return arrOfMonths
 
     default:
@@ -87,20 +87,20 @@ const getMonthNums = (monthAbvr) => {
   return monthNum
 }
 
-const makeDataGraphable = (arrOfPoints) => {
-  let graphablePoints = []
-  arrOfPoints.map( (point) => {
-    let newPoint = point
-    newPoint.x = getMonthNums(point.x)
-    graphablePoints.push(newPoint)
-  })
-  graphablePoints.push({x: 12, y: graphablePoints[graphablePoints.length - 1].y})
-  return graphablePoints
-}
+// const makeDataGraphable = (arrOfPoints) => {
+//   let graphablePoints = []
+//   arrOfPoints.map( (point) => {
+//     let newPoint = point
+//     newPoint.x = getMonthNums(point.x)
+//     graphablePoints.push(newPoint)
+//   })
+//   graphablePoints.push({x: 12, y: graphablePoints[graphablePoints.length - 1].y})
+//   return graphablePoints
+// }
 
 const getGraphData = (currentState) => {
   let data = currentState.data.avg_lat_tilt
-  let fullData = makeDataGraphable(sorter(xyAssigner(data.monthly)))
+  let fullData = sorter(xyAssigner(data.monthly))
   return fullData
 }
 
@@ -112,19 +112,20 @@ const parseGraphData = (dataArr, timeInt) => {
   switch (selector) {
     case 'monthly':
     {let abvr = getMonthAbv(timeInt)
-    let monthNum = getMonthNums(abvr)
-    let monthNums = []
-    monthNums.push(monthNum)
-    monthNums.push(monthNum + 1)
-    monthNums.map( (num) => {
-      parsedData.push(findPoint(dataArr, num))
-    })
+      parsedData.push(findPoint(dataArr, abvr))
+    // let monthNum = getMonthNums(abvr)
+    // let monthNums = []
+    // monthNums.push(monthNum)
+    // monthNums.push(monthNum + 1)
+    // monthNums.map( (num) => {
+      // parsedData.push(findPoint(dataArr, num))
+    // })
     return parsedData}
 
     case 'seasonally':
-    {let monthNums = getSeasonMonths(timeInt)
-    monthNums.map( (num) => {
-      parsedData.push(findPoint(dataArr, num))
+    {let monthAbvrs = getSeasonMonths(timeInt)
+    monthAbvrs.map( (abvr) => {
+      parsedData.push(findPoint(dataArr, abvr))
     })
     return parsedData}
 
@@ -133,31 +134,33 @@ const parseGraphData = (dataArr, timeInt) => {
   }
 }
 
-var AreaChart = rd3.AreaChart
+var BarChart = rd3.BarChart
 
 const Graph = (state) => {
 
   let currentState = getCurrentState(state)
+  console.log(currentState.data.avg_lat_tilt);
 
   if (currentState.data.avg_lat_tilt !== undefined) {
     let fullData = getGraphData(currentState)
     let displayData = parseGraphData(fullData, currentState.timeInterval)
     console.log('display data:', displayData);
 
-    let areaData = [
-      {
-        name: 'solarData',
-        values: displayData
-      }
-    ]
+    var barData = [
+  {
+    "name": "Series A",
+    "values": displayData
+  }
+];
 
     return (
       <div className="graph">
-        <AreaChart
-          data={areaData}
+        <BarChart
+          data={barData}
           width={800}
           height={300}
-          xAxisTickInterval={{unit: 'inches', interval: 1}}
+          fill={'#FDB12B'}
+          title='Average Solar Energy per Day'
           />
       </div>
     )
