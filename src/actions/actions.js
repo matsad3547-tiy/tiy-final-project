@@ -6,9 +6,15 @@ export const changeUSState = (usState) => {
 }
 
 export const changeTimeInterval = (timeInterval) => {
-  console.log('time interval: ', timeInterval);
   return {
     type: 'SET_TIME_INTERVAL',
     timeInterval
+  }
+}
+
+export const selectPage = (pageSelected) => {
+  return {
+    type: 'SET_PAGE_SELECTED',
+    pageSelected
   }
 }

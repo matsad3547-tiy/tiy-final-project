@@ -27,6 +27,13 @@ export const timeInterval = (state = 'annually', action) => {
   return state;
 }
 
+export const pageSelected = (state = 'home', action) => {
+  if (action.pageSelected !== undefined) {
+    return action.pageSelected
+  }
+  return state;
+}
+
 export const data = (state = {}, action) => {
   if (action.data !== undefined) {
     return action.data
@@ -35,6 +42,7 @@ export const data = (state = {}, action) => {
 }
 
 export const combinedReducers = combineReducers({
+  pageSelected,
 	loading,
 	usState,
 	timeInterval,

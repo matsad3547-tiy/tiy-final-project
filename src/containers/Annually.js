@@ -15,5 +15,4 @@ return (
   </form>
 )}
 
-Annually = connect()(Annually);
-export default Annually
+export default connect()(Annually);

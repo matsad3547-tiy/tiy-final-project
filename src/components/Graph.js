@@ -77,16 +77,6 @@ const sorter = (arr) => {
   return newArr
 }
 
-const getMonthNums = (monthAbvr) => {
-  let monthNum;
-  monthObjs.map( (obj, i) => {
-    for (let key in obj) {
-      if (obj[key] === monthAbvr) monthNum = i
-    }
-  })
-  return monthNum
-}
-
 const getGraphData = (currentState) => {
   let data = currentState.data.avg_lat_tilt
   let fullData = sorter(xyAssigner(data.monthly))
@@ -151,13 +141,16 @@ const Graph = (state) => {
   }
 ];
 
+  // let color = '#FDB12B'
+  let color = '#111'
+
     return (
       <div className="graph">
         <BarChart
           data={barData}
           width={graphWidth}
           height={300}
-          fill={'#FDB12B'}
+          fill={color}
           title='Average Solar Energy per Day'
           />
       </div>

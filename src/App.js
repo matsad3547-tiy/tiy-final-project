@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import USStateSelect from './containers/USStateSelect'
-import Annually from './containers/Annually'
-import Seasonally from './containers/Seasonally'
-import Monthly from './containers/Monthly'
-import Display from './components/Display'
-
-// import Header from './components/Header'
+import Header from './components/Header'
+import Body from './components/Body'
 
 class App extends Component {
   render() {
@@ -22,35 +17,6 @@ class App extends Component {
 
 export default App;
 
-const Header = () => (
-  <div className="App-header">
-    <h2>Yeah, I rendered!!!</h2>
-  </div>
-)
-
-const Body = () => (
-  <div className="body">
-    <Input />
-    <Display />
-  </div>
-)
-
 const Footer = () => (
-  <p className="footer">I'm a footer</p>
-)
-
-const Input = () => (
-  <div className="input">
-    <USStateSelect />
-    <TimeIntervalSelect />
-  </div>
-)
-
-const TimeIntervalSelect = () => (
-  <div>
-    <h3>Select a Time Interval</h3>
-    <Annually />
-    <Seasonally />
-    <Monthly />
-  </div>
+  <p className="footer">check out the code to this project at <a href="https://github.com/matsad3547-tiy/tiy-final-project"target="blank">github</a></p>
 )

@@ -1,18 +1,56 @@
+@include responsive-font(5vw, 35px, 150px, 50px);
+
+@-ms-viewport{
+  width: device-width;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+h1, h2, h3, h4, label {
+  padding: .1em;
+  margin: .4em;
+}
+
 .App {
+  display: flex;
+  flex-direction: column;
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
 .App-header {
+  /*position: fixed;
+  width: 100%;*/
+  padding: .5em;
+  min-height: 7em;
   background-color: #222;
-  height: 50px;
-  padding: 20px;
   color: white;
 }
+
+.App-header h1 {
+  padding: 2em, 0, 3em, 0;
+}
+
+.App-header ul {
+  position: absolute;
+  right: 1em;
+  top: 5em;
+}
+
+.App-header li {
+  display: inline;
+  text-align: right;
+  margin: .5em;
+  padding: .5em;
+  background-color: darkslategray;
+}
+/*
+.body {
+  margin-top: 8em;
+}*/
 
 .App-intro {
   font-size: large;
@@ -31,4 +69,21 @@ li {
 
 .select {
   display: inline;
+}
+
+button {
+  font-size: .7em;
+  padding: .25em;
+}
+
+.footer{
+  min-height: 4em;
+  background-color: darkslategray;
+  color: white;
+  padding: 10px;
+  margin-bottom: -10em;
+}
+
+.footer a {
+  color: lightgray;
 }

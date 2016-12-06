@@ -16,7 +16,7 @@ let USStateSelect = ({ dispatch }) => {
   return (
     <div className="select">
       <form onSubmit={onSubmit}>
-        <h3>Select a State</h3>
+        <h4>Select a State</h4>
         <button type="submit" className="select">Select a State</button>
         <select className="dropdown" ref={node => input = node}>
           <option value="">States</option>
