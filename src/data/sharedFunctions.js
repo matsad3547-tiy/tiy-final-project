@@ -10,6 +10,6 @@ export const getCurrentState = (state) => {
 
 export const select = (timeInt) => {
   if (months.includes(timeInt)) return 'monthly';
-  if (seasons.includes(timeInt)) return 'seasonally';
-  if (timeInt === 'annually') return 'annually';
+  else if (seasons.includes(timeInt)) return 'seasonally';
+  else if (timeInt === 'annually') return 'annually';
 }

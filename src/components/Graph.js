@@ -4,25 +4,6 @@ import  {getCurrentState, select}  from '../data/sharedFunctions'
 import { months, seasons, monthObjs } from '../data/constants'
 import rd3 from 'react-d3'
 
-//Utah Data
-const annualData = {
-  'apr': 6.63,
-  'aug': 7.54,
-  'dec': 3.75,
-  'feb': 4.45,
-  'jan': 3.63,
-  'jul': 8.43,
-  'jun': 8.96,
-  'mar': 6.2,
-  'may': 7.65,
-  'nov': 5.08,
-  'oct': 6.73,
-  'sep': 7.69
-}
-
-// console.log(months);
-// console.log(monthObjs);
-
 const getMonthAbvrs = (monthObjs) => {
   let abvrs = []
   monthObjs.map( (obj) => {
@@ -33,7 +14,17 @@ const getMonthAbvrs = (monthObjs) => {
   return abvrs;
 }
 
-// console.log(getMonthAbvrs(monthObjs));
+const getMonthAbv = (month) => {
+  let abv = ''
+  monthObjs.map( (obj) => {
+    for (let key in obj) {
+      if (key === month){
+        abv = obj[key]
+      }
+    }
+  })
+  return abv;
+}
 
 const xyAssigner = (obj) => {
   let arr = []
@@ -46,58 +37,108 @@ const xyAssigner = (obj) => {
   return arr
 }
 
-// console.log(getMonthAbvrs(monthObjs));
+const sorter = (arr) => {
+  let monthAbvrs = getMonthAbvrs(monthObjs)
+  let newArr = arr.sort( (a, b) => {
+    let aI = (monthAbvrs.indexOf(a.x))
+    let bI = (monthAbvrs.indexOf(b.x))
+    return aI - bI
+  })
+  return newArr
+}
 
-// const sortData = (data) => {
-//   let abvrs = getMonthAbvrs(monthObjs);
-//   abvrs.map ( abv => {
-//     if (abv)
-//   })
-// }
+const findPoint = (arrOfPoints, keyVal) => {
+  return arrOfPoints.find( (point) => {
+    return point.x === keyVal
+  })
+}
 
+const getSeasonMonths = (season) => {
+  let arrOfMonths = []
+  switch (season) {
+    case 'spring':
+      arrOfMonths = ['mar', 'apr', 'may']
+      return arrOfMonths
 
+    case 'summer':
+      arrOfMonths = ['jun', 'jul', 'aug']
+      return arrOfMonths
+
+    case 'fall':
+      arrOfMonths = ['sep', 'oct', 'nov']
+      return arrOfMonths
+
+    case 'winter':
+      arrOfMonths = ['dec', 'jan', 'feb']
+      return arrOfMonths
+
+    default:
+      return arrOfMonths
+  }
+}
 
 const getGraphData = (currentState) => {
-  // let timeInt = currentState.timeInterval;
-  // let data = '';
-  // let dataPromise = currentState.data.avg_dni
-  // dataPromise.then( (d) => console.log('annual data: ', d.annual))
-
   let data = currentState.data.avg_dni
+//   console.log(data);
+//   let tries = 0;
+//   let maxTries = 3;
+//   while (data === undefined && tries < maxTries) {
+//     setTimeout( ( () => data = currentState.data.avg_dni
+// ), 1000)
+//     console.log('getting data - tries:', tries);
+//     console.log(data);
+//     tries++
+//   }
+
   if (data !== undefined) {
-    console.log('monthly data:', data.monthly);
+    let fullData = sorter(xyAssigner(data.monthly))
+    console.log('graph data is found');
+    return fullData
   }
-  // else console.log('data: ', data);
-  // let selector = select(timeInt);
-  // let dataArr = [];
-
-  // console.log(Object.values(data));
-
-  // switch (selector)
-  //   case 'annually':
-  //   dataArr = data
-  //
-  //
-  //
-  //   default:
-  //   return 'There is no data to display'
-  //
-  //
-  return 42;
+  else {
+    console.log('graph data is unavailable');
+  }
 }
+
+const parseGraphData = (dataArr, timeInt) => {
+
+  let selector = select(timeInt);
+  let parsedData = [];
+
+  switch (selector) {
+    case 'monthly':
+    let abvr = getMonthAbv(timeInt)
+    parsedData = findPoint(dataArr, abvr)
+    return parsedData
+
+    case 'seasonally':
+    let abvrs = getSeasonMonths(timeInt)
+    abvrs.map( (abv) => {
+      parsedData.push(findPoint(dataArr, abv))
+    })
+    return parsedData
+
+    default: //annually
+    return parsedData = dataArr
+  }
+}
+
+var AreaChart = rd3.AreaChart
 
 
 const Graph = (state) => {
 
   let currentState = getCurrentState(state)
-  let displayData = getGraphData(currentState)
+  let fullData = getGraphData(currentState)
+  let displayData = parseGraphData(fullData, currentState.timeInterval)
+  console.log('display data:', displayData);
 
   return (
     <div className="graph">
       Graph goes here
+
     </div>
   )
 }
-
 
 export default connect(getCurrentState)(Graph)

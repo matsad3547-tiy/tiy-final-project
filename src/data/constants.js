@@ -36,3 +36,20 @@ export const monthObjs = [
 export const months = getMonths(monthObjs);
 
 export const seasons = ['spring', 'summer', 'fall', 'winter'];
+
+//
+// //Utah Data
+// const annualData = {
+//   'apr': 6.63,
+//   'aug': 7.54,
+//   'dec': 3.75,
+//   'feb': 4.45,
+//   'jan': 3.63,
+//   'jul': 8.43,
+//   'jun': 8.96,
+//   'mar': 6.2,
+//   'may': 7.65,
+//   'nov': 5.08,
+//   'oct': 6.73,
+//   'sep': 7.69
+// }

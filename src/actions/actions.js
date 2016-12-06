@@ -6,6 +6,7 @@ export const changeUSState = (usState) => {
 }
 
 export const changeTimeInterval = (timeInterval) => {
+  console.log('time interval: ', timeInterval);
   return {
     type: 'SET_TIME_INTERVAL',
     timeInterval

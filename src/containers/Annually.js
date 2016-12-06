@@ -4,18 +4,13 @@ import { changeTimeInterval } from '../actions/actions'
 
 let Annually = ({dispatch}) => {
 
-  const onSubmit = e => {
-    let input;
-    console.log(e.id);
+  const onClick = e => {
     e.preventDefault()
-    if (!input.value.trim()) {
-      return
-    }
-    dispatch(changeTimeInterval(input.value))
+    dispatch(changeTimeInterval('annually'))
   }
 
 return (
-  <form className="select" onSubmit={onSubmit}>
+  <form className="select" onClick={onClick}>
     <button id="annually">Annually</button>
   </form>
 )}

@@ -20,8 +20,8 @@ const getSolarKey = usState => {
 const dataService = store => next => action => {
 	next(action)
 
-	console.log('data service state: ', store );
-	console.log('data service action: ', action);
+	// console.log('data service state: ', store );
+	// console.log('data service action: ', action);
 	switch (action.type) {
 	case 'GET_SOLAR_DATA':
 		request
@@ -34,7 +34,7 @@ const dataService = store => next => action => {
 					})
 				}
 				const data = JSON.parse(res.text)
-				console.log(data.outputs);
+				// console.log(data.outputs);
 				next({
 					type: 'GET_SOLAR_DATA_RECEIVED',
 					data: data.outputs
