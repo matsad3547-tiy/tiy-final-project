@@ -87,17 +87,6 @@ const getMonthNums = (monthAbvr) => {
   return monthNum
 }
 
-// const makeDataGraphable = (arrOfPoints) => {
-//   let graphablePoints = []
-//   arrOfPoints.map( (point) => {
-//     let newPoint = point
-//     newPoint.x = getMonthNums(point.x)
-//     graphablePoints.push(newPoint)
-//   })
-//   graphablePoints.push({x: 12, y: graphablePoints[graphablePoints.length - 1].y})
-//   return graphablePoints
-// }
-
 const getGraphData = (currentState) => {
   let data = currentState.data.avg_lat_tilt
   let fullData = sorter(xyAssigner(data.monthly))
@@ -113,13 +102,6 @@ const parseGraphData = (dataArr, timeInt) => {
     case 'monthly':
     {let abvr = getMonthAbv(timeInt)
       parsedData.push(findPoint(dataArr, abvr))
-    // let monthNum = getMonthNums(abvr)
-    // let monthNums = []
-    // monthNums.push(monthNum)
-    // monthNums.push(monthNum + 1)
-    // monthNums.map( (num) => {
-      // parsedData.push(findPoint(dataArr, num))
-    // })
     return parsedData}
 
     case 'seasonally':
@@ -134,6 +116,21 @@ const parseGraphData = (dataArr, timeInt) => {
   }
 }
 
+const getGraphWidth = (timeInt) => {
+  let selector = select(timeInt)
+  let graphWidth
+  switch (selector) {
+    case 'monthly':
+      return graphWidth = 200
+
+    case 'seasonally':
+      return graphWidth = 300
+
+    default:
+    return graphWidth = 800
+  }
+}
+
 var BarChart = rd3.BarChart
 
 const Graph = (state) => {
@@ -144,6 +141,7 @@ const Graph = (state) => {
   if (currentState.data.avg_lat_tilt !== undefined) {
     let fullData = getGraphData(currentState)
     let displayData = parseGraphData(fullData, currentState.timeInterval)
+    let graphWidth = getGraphWidth(currentState.timeInterval)
     console.log('display data:', displayData);
 
     var barData = [
@@ -157,7 +155,7 @@ const Graph = (state) => {
       <div className="graph">
         <BarChart
           data={barData}
-          width={800}
+          width={graphWidth}
           height={300}
           fill={'#FDB12B'}
           title='Average Solar Energy per Day'
