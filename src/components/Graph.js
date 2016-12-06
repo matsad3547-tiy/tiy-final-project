@@ -26,6 +26,36 @@ const getMonthAbv = (month) => {
   return abv;
 }
 
+const findPoint = (arrOfPoints, keyVal) => {
+  return arrOfPoints.find( (point) => {
+    return point.x === keyVal
+  })
+}
+
+const getSeasonMonths = (season) => {
+  let arrOfMonths = []
+  switch (season) {
+    case 'spring':
+      arrOfMonths = [3, 4, 5, 6]
+      return arrOfMonths
+
+    case 'summer':
+      arrOfMonths = [6, 7, 8, 9]
+      return arrOfMonths
+
+    case 'fall':
+      arrOfMonths = [9, 10, 11, 12]
+      return arrOfMonths
+
+    case 'winter':
+      arrOfMonths = [12, 1, 2, 3]
+      return arrOfMonths
+
+    default:
+      return arrOfMonths
+  }
+}
+
 const xyAssigner = (obj) => {
   let arr = []
   for (let key in obj) {
@@ -47,36 +77,6 @@ const sorter = (arr) => {
   return newArr
 }
 
-const findPoint = (arrOfPoints, keyVal) => {
-  return arrOfPoints.find( (point) => {
-    return point.x === keyVal
-  })
-}
-
-const getSeasonMonths = (season) => {
-  let arrOfMonths = []
-  switch (season) {
-    case 'spring':
-      arrOfMonths = ['mar', 'apr', 'may']
-      return arrOfMonths
-
-    case 'summer':
-      arrOfMonths = ['jun', 'jul', 'aug']
-      return arrOfMonths
-
-    case 'fall':
-      arrOfMonths = ['sep', 'oct', 'nov']
-      return arrOfMonths
-
-    case 'winter':
-      arrOfMonths = ['dec', 'jan', 'feb']
-      return arrOfMonths
-
-    default:
-      return arrOfMonths
-  }
-}
-
 const getMonthNums = (monthAbvr) => {
   let monthNum;
   monthObjs.map( (obj, i) => {
@@ -94,11 +94,12 @@ const makeDataGraphable = (arrOfPoints) => {
     newPoint.x = getMonthNums(point.x)
     graphablePoints.push(newPoint)
   })
+  graphablePoints.push({x: 12, y: graphablePoints[graphablePoints.length - 1].y})
   return graphablePoints
 }
 
 const getGraphData = (currentState) => {
-  let data = currentState.data.avg_dni
+  let data = currentState.data.avg_lat_tilt
   let fullData = makeDataGraphable(sorter(xyAssigner(data.monthly)))
   return fullData
 }
@@ -110,16 +111,22 @@ const parseGraphData = (dataArr, timeInt) => {
 
   switch (selector) {
     case 'monthly':
-    let abvr = getMonthAbv(timeInt)
-    parsedData = findPoint(dataArr, abvr)
-    return parsedData
+    {let abvr = getMonthAbv(timeInt)
+    let monthNum = getMonthNums(abvr)
+    let monthNums = []
+    monthNums.push(monthNum)
+    monthNums.push(monthNum + 1)
+    monthNums.map( (num) => {
+      parsedData.push(findPoint(dataArr, num))
+    })
+    return parsedData}
 
     case 'seasonally':
-    let abvrs = getSeasonMonths(timeInt)
-    abvrs.map( (abv) => {
-      parsedData.push(findPoint(dataArr, abv))
+    {let monthNums = getSeasonMonths(timeInt)
+    monthNums.map( (num) => {
+      parsedData.push(findPoint(dataArr, num))
     })
-    return parsedData
+    return parsedData}
 
     default: //annually
     return parsedData = dataArr
@@ -127,14 +134,12 @@ const parseGraphData = (dataArr, timeInt) => {
 }
 
 var AreaChart = rd3.AreaChart
-// var LineChart = rd3.LineChart
-
 
 const Graph = (state) => {
 
   let currentState = getCurrentState(state)
 
-  if (currentState.data.avg_dni !== undefined) {
+  if (currentState.data.avg_lat_tilt !== undefined) {
     let fullData = getGraphData(currentState)
     let displayData = parseGraphData(fullData, currentState.timeInterval)
     console.log('display data:', displayData);
