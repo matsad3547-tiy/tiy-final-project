@@ -77,27 +77,30 @@ const getSeasonMonths = (season) => {
   }
 }
 
+const getMonthNums = (monthAbvr) => {
+  let monthNum;
+  monthObjs.map( (obj, i) => {
+    for (let key in obj) {
+      if (obj[key] === monthAbvr) monthNum = i
+    }
+  })
+  return monthNum
+}
+
+const makeDataGraphable = (arrOfPoints) => {
+  let graphablePoints = []
+  arrOfPoints.map( (point) => {
+    let newPoint = point
+    newPoint.x = getMonthNums(point.x)
+    graphablePoints.push(newPoint)
+  })
+  return graphablePoints
+}
+
 const getGraphData = (currentState) => {
   let data = currentState.data.avg_dni
-//   console.log(data);
-//   let tries = 0;
-//   let maxTries = 3;
-//   while (data === undefined && tries < maxTries) {
-//     setTimeout( ( () => data = currentState.data.avg_dni
-// ), 1000)
-//     console.log('getting data - tries:', tries);
-//     console.log(data);
-//     tries++
-//   }
-
-  if (data !== undefined) {
-    let fullData = sorter(xyAssigner(data.monthly))
-    console.log('graph data is found');
-    return fullData
-  }
-  else {
-    console.log('graph data is unavailable');
-  }
+  let fullData = makeDataGraphable(sorter(xyAssigner(data.monthly)))
+  return fullData
 }
 
 const parseGraphData = (dataArr, timeInt) => {
@@ -130,29 +133,37 @@ var AreaChart = rd3.AreaChart
 const Graph = (state) => {
 
   let currentState = getCurrentState(state)
-  let fullData = getGraphData(currentState)
-  let displayData = parseGraphData(fullData, currentState.timeInterval)
-  console.log('display data:', displayData);
 
-  let areaData = [
-    {
-      name: 'solarData',
-      // values: displayData
-      values: [ {x: 1, y: 3.63}, {x: 2, y: 4.45}, {x: 3, y: 6.2}, {x: 4, y: 6.63},{x: 5, y: 7.65}, {x: 6, y: 8.96}, {x: 7, y: 8.43}, {x: 8, y: 7.54}, {x: 9, y: 7.69}, {x: 10, y: 6.73}, {x: 11, y: 5.08}, {x: 12, y: 3.75} ]
-    }
-]
-  // console.log('area data:', areaData);
+  if (currentState.data.avg_dni !== undefined) {
+    let fullData = getGraphData(currentState)
+    let displayData = parseGraphData(fullData, currentState.timeInterval)
+    console.log('display data:', displayData);
 
-  return (
-    <div className="graph">
-      <AreaChart
-        data={areaData}
-        width={800}
-        height={300}
-        xAxisTickInterval={{unit: 'inches', interval: 1}}
-        />
-    </div>
-  )
+    let areaData = [
+      {
+        name: 'solarData',
+        values: displayData
+      }
+    ]
+
+    return (
+      <div className="graph">
+        <AreaChart
+          data={areaData}
+          width={800}
+          height={300}
+          xAxisTickInterval={{unit: 'inches', interval: 1}}
+          />
+      </div>
+    )
+  }
+  else {
+    return (
+      <div className="graph">
+        Sorry, data could not be retrieved at this time.
+      </div>
+    )
+  }
 }
 
 export default connect(getCurrentState)(Graph)
