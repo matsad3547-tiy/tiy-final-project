@@ -4,6 +4,7 @@ export const getCurrentState = (state) => {
   return {
     usState: state.usState,
     timeInterval: state.timeInterval,
+    pageSelected: state.pageSelected,
     data: state.data
   }
 }

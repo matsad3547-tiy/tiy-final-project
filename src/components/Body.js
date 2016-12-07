@@ -7,6 +7,7 @@ import Monthly from '../containers/Monthly'
 import { connect } from 'react-redux'
 import { getCurrentState }  from '../data/sharedFunctions'
 import About from './About'
+import Links from './Links'
 
 const Input = () => (
   <div className="input">
@@ -25,9 +26,9 @@ const TimeIntervalSelect = () => (
 )
 
 const Body = (state) => {
+  
   let currentState = getCurrentState(state)
-  console.log('current state:', currentState);
-  console.log('page to render:', currentState.pageSelected);
+
   if (currentState.pageSelected === 'about') {
     return (
       <About />

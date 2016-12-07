@@ -141,8 +141,8 @@ const Graph = (state) => {
   }
 ];
 
-  // let color = '#FDB12B'
-  let color = '#111'
+  let color = '#FDB12B'
+  // let color = '#111'
 
     return (
       <div className="graph">
@@ -150,7 +150,9 @@ const Graph = (state) => {
           data={barData}
           width={graphWidth}
           height={300}
+          yScale={7}
           fill={color}
+          stroke={'#FDB12B'}
           title='Average Solar Energy per Day'
           />
       </div>

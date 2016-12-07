@@ -11,7 +11,7 @@
 }
 
 h1, h2, h3, h4, label {
-  padding: .1em;
+  padding: .5em;
   margin: .4em;
 }
 
@@ -47,10 +47,10 @@ h1, h2, h3, h4, label {
   padding: .5em;
   background-color: darkslategray;
 }
-/*
+
 .body {
-  margin-top: 8em;
-}*/
+  min-height: 30em;
+}
 
 .App-intro {
   font-size: large;
