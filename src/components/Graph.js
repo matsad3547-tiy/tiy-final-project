@@ -136,12 +136,19 @@ const Graph = (state) => {
 
             // let data = [ {x: 1, y: 3.63}, {x: 2, y: 4.45}, {x: 3, y: 6.2}, {x: 4, y: 6.63},{x: 5, y: 7.65}, {x: 6, y: 8.96}, {x: 7, y: 8.43}, {x: 8, y: 7.54}, {x: 9, y: 7.69}, {x: 10, y: 6.73}, {x: 11, y: 5.08}, {x: 12, y: 3.75} ]
 
-    let width = graphWidth
-    let height = 300
+    let svgWidth = graphWidth
+    let svgHeight = 300
+
+    let margin = {top: 20, right: 20, bottom: 30, left: 40}
+
+    let width = svgWidth - margin.left - margin.right
+    let height = svgHeight - margin.top - margin.bottom
 
     const x = d3.scaleBand()
       .rangeRound([0, width])
       .padding(0.1)
+      // .step()
+      // .padding(1)
       .align(0.1)
 
     const y = d3.scaleLinear()
@@ -156,24 +163,24 @@ const Graph = (state) => {
     // z.domain(data.columns.slice(1))
 
     let scaleFactor = 30
-    const yVal = d => -y(d[1].y)
+
     let barWidth = x.bandwidth()
+    const barHeight = d => d * scaleFactor
+    const yVal = () => height - barHeight
     const xVal = i => {
-      console.log(i);
-      console.log(barWidth);
-      return ((i * barWidth ))
+      return ((i * barWidth))
     }
-    const barHeight = yVal => yVal * scaleFactor
     console.log('data:', data);
 
     return (
       <div>
 
-        <svg width={graphWidth} height={height}>
-        	<g transform={"translate(0," - height + ")"} fill={z(1)}>
+        <svg width={graphWidth} height={height} >
+        	<g transform={"translate(" + margin.left + ", " + margin.top + ")" } fill={z(1)} >
 
-            {data.map( (d, i) => <rect key={i} x={xVal(i)} y={0} height={barHeight(d.y)} width={barWidth}></rect>
+            {data.map( (d, i) => <rect key={i} x={xVal(i)} y={height - barHeight(d.y)} height={barHeight(d.y)} width={barWidth}></rect>
             )}
+
 
           </g>
           <g className="axis axis--y"></g>
@@ -181,6 +188,15 @@ const Graph = (state) => {
       </div>
     )
   }
+
+
+  // <rect x={0} y={0} height={10} width={10} style={{fill: '#111'}}></rect>
+  // <rect x={0} y={height - margin.bottom} height={10} width={10} style={{fill: '#111'}}></rect>
+  // <rect x={width - 10} y={height - margin.bottom} height={10} width={10} style={{fill: '#111'}}></rect>
+  // <rect x={width - 10} y={0} height={10} width={10} style={{fill: '#111'}}></rect>
+  // <rect x={50} y={height - 200} height={200} width={10} style={{fill: '#f00'}}></rect>
+  // <rect x={65} y={height - 220} height={220} width={10} style={{fill: '#f00'}}></rect>
+
 //
 //               <rect x={2} y={5} width={x.bandwidth()} height={barHeight(data[3].y)  }></rect>
 //
