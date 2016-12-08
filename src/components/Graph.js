@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import  {getCurrentState, select}  from '../data/sharedFunctions'
 import { months, seasons, monthObjs } from '../data/constants'
-import rd3 from 'react-d3'
+import * as d3 from 'd3'
+// import { d3.scale } from 'd3'
 
 const getMonthAbvrs = (monthObjs) => {
   let abvrs = []
@@ -117,11 +118,10 @@ const getGraphWidth = (timeInt) => {
       return graphWidth = 300
 
     default:
-    return graphWidth = 800
+    return graphWidth = 750
   }
 }
 
-var BarChart = rd3.BarChart
 
 const Graph = (state) => {
 
@@ -130,34 +130,126 @@ const Graph = (state) => {
 
   if (currentState.data.avg_lat_tilt !== undefined) {
     let fullData = getGraphData(currentState)
-    let displayData = parseGraphData(fullData, currentState.timeInterval)
+    let data = parseGraphData(fullData, currentState.timeInterval)
     let graphWidth = getGraphWidth(currentState.timeInterval)
-    console.log('display data:', displayData);
+    // console.log('display data:', data);
 
-    var barData = [
-  {
-    "name": "Series A",
-    "values": displayData
-  }
-];
+            // let data = [ {x: 1, y: 3.63}, {x: 2, y: 4.45}, {x: 3, y: 6.2}, {x: 4, y: 6.63},{x: 5, y: 7.65}, {x: 6, y: 8.96}, {x: 7, y: 8.43}, {x: 8, y: 7.54}, {x: 9, y: 7.69}, {x: 10, y: 6.73}, {x: 11, y: 5.08}, {x: 12, y: 3.75} ]
 
-  let color = '#FDB12B'
-  // let color = '#111'
+    let width = graphWidth
+    let height = 300
+
+    const x = d3.scaleBand()
+      .rangeRound([0, width])
+      .padding(0.1)
+      .align(0.1)
+
+    const y = d3.scaleLinear()
+      .rangeRound([height, 0])
+
+    const z = d3.scaleOrdinal()
+      .range(['#FDB12B', '#444'])
+
+    // var color = d3.scaleOrdinal(d3.schemeCategory20);
+    x.domain(data.map(d => d.x))
+    y.domain([0, d3.max(data, d => d.total,)]).nice()
+    // z.domain(data.columns.slice(1))
+
+    let scaleFactor = 30
+    const yVal = d => -y(d[1].y)
+    let barWidth = x.bandwidth()
+    const xVal = i => {
+      console.log(i);
+      console.log(barWidth);
+      return ((i * barWidth ))
+    }
+    const barHeight = yVal => yVal * scaleFactor
+    console.log('data:', data);
 
     return (
-      <div className="graph">
-        <BarChart
-          data={barData}
-          width={graphWidth}
-          height={300}
-          yScale={7}
-          fill={color}
-          stroke={'#FDB12B'}
-          title='Average Solar Energy per Day'
-          />
+      <div>
+
+        <svg width={graphWidth} height={height}>
+        	<g transform={"translate(0," - height + ")"} fill={z(1)}>
+
+            {data.map( (d, i) => <rect key={i} x={xVal(i)} y={0} height={barHeight(d.y)} width={barWidth}></rect>
+            )}
+
+          </g>
+          <g className="axis axis--y"></g>
+        </svg>
       </div>
     )
   }
+//
+//               <rect x={2} y={5} width={x.bandwidth()} height={barHeight(data[3].y)  }></rect>
+//
+//   {data.map( (d, i) => <rect key={i} x={d => x(d.data.x) y={d => d[1]} height={barHeight} width={barWidth} }></rect>
+// )}
+
+  // if (currentState.data.avg_lat_tilt !== undefined) {
+  //   let fullData = getGraphData(currentState)
+  //   let displayData = parseGraphData(fullData, currentState.timeInterval)
+  //   let graphWidth = getGraphWidth(currentState.timeInterval)
+  //   console.log('display data:', displayData);
+  //
+  //   // let barData = [
+  //   //   {
+  //   //     "name": "Series A",
+  //   //     "values": displayData
+  //   //   }
+  //   // ];
+  //
+  //
+  //   var data = [
+  //     { apples: 53245, oranges:	200 },
+  //     { apples: 28479, oranges:	200 },
+  //     { apples: 19697, oranges:	200 },
+  //     { apples: 24037, oranges:	200 },
+  //     { apples: 40245, oranges:	200 }
+  //   ];
+  //
+  //   // var width = 640
+  //   let height = 300
+  //   var radius = Math.min(graphWidth, height) / 2;
+  //
+  //   var color = d3.scaleOrdinal(d3.schemeCategory20);
+  //
+  //   var pie = d3.pie()
+  //       // .value(d => d[this.state.dataset])
+  //       // .value(d => d['apples'])
+  //       .value(d => d['y'])
+  //       // .value(d => {
+  //       //   console.log(d);
+  //       //   return  d[data.apples]
+  //       //   })
+  //       .sort(null);
+  //
+  //   var arc = d3.arc()
+  //       .innerRadius(radius - 100)
+  //       .outerRadius(radius - 20);
+  //
+  //   // var displayedData = pie(data);
+  //   var displayedData = pie(displayData);
+  //
+  //   return (
+  //     <div>
+  //
+  //       <svg width={graphWidth} height={height}>
+  //       	<g transform={"translate(" + graphWidth / 2 + "," + height / 2 + ")"}>
+  //         	{displayedData.map((slice, i) =>
+  //           	<path
+  //             	fill={color(i)}
+  //             	key={i}
+  //               d={arc(slice)} />
+  //           )}
+  //         </g>
+  //       </svg>
+  //     </div>
+  //   )
+  // }
+
+
   else {
     return (
       <div className="graph">

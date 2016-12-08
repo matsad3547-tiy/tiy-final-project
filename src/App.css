@@ -52,6 +52,12 @@ h1, h2, h3, h4, label {
   min-height: 30em;
 }
 
+.body li {
+  border: none;
+  width: 100%;
+  list-style: inherit;
+}
+
 .App-intro {
   font-size: large;
 }

@@ -1,13 +1,6 @@
 import { months, seasons } from './constants'
 
-export const getCurrentState = (state) => {
-  return {
-    usState: state.usState,
-    timeInterval: state.timeInterval,
-    pageSelected: state.pageSelected,
-    data: state.data
-  }
-}
+export const getCurrentState = state => state
 
 export const select = (timeInt) => {
   if (months.includes(timeInt)) return 'monthly';
