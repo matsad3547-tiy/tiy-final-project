@@ -29,7 +29,7 @@ const getMonthAbv = (month) => {
 
 const findPoint = (arrOfPoints, keyVal) => {
   return arrOfPoints.find( (point) => {
-    return point.x === keyVal
+    return point.month === keyVal
   })
 }
 
@@ -61,8 +61,8 @@ const xyAssigner = (obj) => {
   let arr = []
   for (let key in obj) {
     let newObj = {}
-    newObj.x = key
-    newObj.y = obj[key]
+    newObj.month = key
+    newObj.value = obj[key]
     arr.push(newObj)
   }
   return arr
@@ -71,8 +71,8 @@ const xyAssigner = (obj) => {
 const sorter = (arr) => {
   let monthAbvrs = getMonthAbvrs(monthObjs)
   let newArr = arr.sort( (a, b) => {
-    let aI = (monthAbvrs.indexOf(a.x))
-    let bI = (monthAbvrs.indexOf(b.x))
+    let aI = (monthAbvrs.indexOf(a.month))
+    let bI = (monthAbvrs.indexOf(b.month))
     return aI - bI
   })
   return newArr
@@ -134,8 +134,6 @@ const Graph = (state) => {
     let graphWidth = getGraphWidth(currentState.timeInterval)
     // console.log('display data:', data);
 
-            // let data = [ {x: 1, y: 3.63}, {x: 2, y: 4.45}, {x: 3, y: 6.2}, {x: 4, y: 6.63},{x: 5, y: 7.65}, {x: 6, y: 8.96}, {x: 7, y: 8.43}, {x: 8, y: 7.54}, {x: 9, y: 7.69}, {x: 10, y: 6.73}, {x: 11, y: 5.08}, {x: 12, y: 3.75} ]
-
     let svgWidth = graphWidth
     let svgHeight = 300
 
@@ -147,8 +145,6 @@ const Graph = (state) => {
     const x = d3.scaleBand()
       .rangeRound([0, width])
       .padding(0.1)
-      // .step()
-      // .padding(1)
       .align(0.1)
 
     const y = d3.scaleLinear()
@@ -157,8 +153,7 @@ const Graph = (state) => {
     const z = d3.scaleOrdinal()
       .range(['#FDB12B', '#444'])
 
-    // var color = d3.scaleOrdinal(d3.schemeCategory20);
-    x.domain(data.map(d => d.x))
+    x.domain(data.map(d => d.month))
     y.domain([0, d3.max(data, d => d.total,)]).nice()
     // z.domain(data.columns.slice(1))
 
@@ -166,9 +161,15 @@ const Graph = (state) => {
 
     let barWidth = x.bandwidth()
     const barHeight = d => d * scaleFactor
-    const yVal = () => height - barHeight
-    const xVal = i => {
-      return ((i * barWidth))
+    // const yVal = (d) => {
+    //   console.log(d);
+    //   return y(d)
+    // }
+    // const xVal = i => { //works
+    //   return i * (barWidth + 8)
+    // }
+    const xVal = d => {
+      return x(d.month)
     }
     console.log('data:', data);
 
@@ -177,10 +178,8 @@ const Graph = (state) => {
 
         <svg width={graphWidth} height={height} >
         	<g transform={"translate(" + margin.left + ", " + margin.top + ")" } fill={z(1)} >
-
-            {data.map( (d, i) => <rect key={i} x={xVal(i)} y={height - barHeight(d.y)} height={barHeight(d.y)} width={barWidth}></rect>
+            {data.map( (d, i) => <rect key={i} x={xVal(d)} y={height - barHeight(d.value)} height={barHeight(d.value)} width={barWidth}></rect>
             )}
-
 
           </g>
           <g className="axis axis--y"></g>
@@ -189,11 +188,13 @@ const Graph = (state) => {
     )
   }
 
+  // y={height - barHeight(d.value)}
 
   // <rect x={0} y={0} height={10} width={10} style={{fill: '#111'}}></rect>
   // <rect x={0} y={height - margin.bottom} height={10} width={10} style={{fill: '#111'}}></rect>
-  // <rect x={width - 10} y={height - margin.bottom} height={10} width={10} style={{fill: '#111'}}></rect>
-  // <rect x={width - 10} y={0} height={10} width={10} style={{fill: '#111'}}></rect>
+  // <rect x={width + 10} y={height - margin.bottom} height={10} width={10} style={{fill: '#111'}}></rect>
+  // <rect x={width + 10} y={0} height={10} width={10} style={{fill: '#111'}}></rect>
+
   // <rect x={50} y={height - 200} height={200} width={10} style={{fill: '#f00'}}></rect>
   // <rect x={65} y={height - 220} height={220} width={10} style={{fill: '#f00'}}></rect>
 
