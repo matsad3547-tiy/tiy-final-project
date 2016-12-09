@@ -166,8 +166,7 @@ const Graph = (state) => {
     let fontSize = 15
     let yAxisMaxVal = [1, 1, 1, 1, 1, 1, 1, 1, 9]
     const tickY = (i) => (height - 31) - (i * scaleFactor)
-
-    const yAxisLabel = 'kWh/m^2/day'
+    const yAxisLabel = 'kWh/m\u00B2/day'
 
     return (
       <div>
