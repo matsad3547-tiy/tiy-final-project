@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import  {getCurrentState, select}  from '../data/sharedFunctions'
-import { months, seasons, monthObjs } from '../data/constants'
+import { monthObjs } from '../data/constants'
 import * as d3 from 'd3'
-// import { d3.scale } from 'd3'
 
 const getMonthAbvrs = (monthObjs) => {
   let abvrs = []
@@ -122,7 +121,6 @@ const getGraphWidth = (timeInt) => {
   }
 }
 
-
 const Graph = (state) => {
 
   let currentState = getCurrentState(state)
@@ -132,12 +130,14 @@ const Graph = (state) => {
     let fullData = getGraphData(currentState)
     let data = parseGraphData(fullData, currentState.timeInterval)
     let graphWidth = getGraphWidth(currentState.timeInterval)
-    // console.log('display data:', data);
+
+    let scaleFactor = 30
 
     let svgWidth = graphWidth
-    let svgHeight = 300
 
-    let margin = {top: 20, right: 20, bottom: 30, left: 40}
+    let svgHeight = 350
+
+    let margin = {top: 20, right: 20, bottom: 50, left: 40}
 
     let width = svgWidth - margin.left - margin.right
     let height = svgHeight - margin.top - margin.bottom
@@ -155,117 +155,50 @@ const Graph = (state) => {
 
     x.domain(data.map(d => d.month))
     y.domain([0, d3.max(data, d => d.total,)]).nice()
-    // z.domain(data.columns.slice(1))
 
-    let scaleFactor = 30
 
     let barWidth = x.bandwidth()
     const barHeight = d => d * scaleFactor
-    // const yVal = (d) => {
-    //   console.log(d);
-    //   return y(d)
-    // }
-    // const xVal = i => { //works
-    //   return i * (barWidth + 8)
-    // }
-    const xVal = d => {
-      return x(d.month)
-    }
-    console.log('data:', data);
+    const xVal = d => x(d.month)
+    const yVal = d => height - barHeight(d) - margin.bottom
+
+    const xAxisX = d => xVal(d) + barWidth / 2
+    let fontSize = 15
+    let yAxisMaxVal = [1, 1, 1, 1, 1, 1, 1, 1, 9]
+    const tickY = (i) => (height - 31) - (i * scaleFactor)
+
+    const yAxisLabel = 'kWh/m^2/day'
 
     return (
       <div>
 
         <svg width={graphWidth} height={height} >
         	<g transform={"translate(" + margin.left + ", " + margin.top + ")" } fill={z(1)} >
-            {data.map( (d, i) => <rect key={i} x={xVal(d)} y={height - barHeight(d.value)} height={barHeight(d.value)} width={barWidth}></rect>
+            {data.map( (d, i) => <rect key={i} x={xVal(d)} y={yVal(d.value)} height={barHeight(d.value)} width={barWidth}></rect>
             )}
-
           </g>
-          <g className="axis axis--y"></g>
+          <g className="axis axis--x" transform={"translate(" + 40 + ", 250)"} textAnchor="middle" fontSize={fontSize} fontFamily="sans-serif">
+
+            {data.map((d, i) => <g key={i} className="tick" opacity="1" transform={"translate(" + xAxisX(d) + ",0)"}>
+            <line stroke="#000" y2="6" x1="0.5" x2="0.5"></line>
+            <text fill="#000" y="9" x="0.5" dy="0.71em">{d.month}</text></g>
+          )}
+          </g>
+
+          <g className="axis axis--y" fill="none" fontSize={fontSize} fontFamily="sans-serif" textAnchor="end">
+
+            {yAxisMaxVal.map( (n, i) => <g key={i + 'a'} className="tick" opacity="1" transform={"translate(40," + tickY(i) + ")"}>
+              <line key={i + 'b'} stroke="#000" x2="-6" y1="0.5" y2="0.5"></line>
+              <text key={i + 'c'} fill="#000" x="-9" y="0.5" dy="0.32em">{i}</text>
+          </g>
+          )}
+          <text x="45" y="8" dy="0.35em" textAnchor="start" fill="#000">{yAxisLabel}</text>
+        </g>
+
         </svg>
       </div>
     )
   }
-
-  // y={height - barHeight(d.value)}
-
-  // <rect x={0} y={0} height={10} width={10} style={{fill: '#111'}}></rect>
-  // <rect x={0} y={height - margin.bottom} height={10} width={10} style={{fill: '#111'}}></rect>
-  // <rect x={width + 10} y={height - margin.bottom} height={10} width={10} style={{fill: '#111'}}></rect>
-  // <rect x={width + 10} y={0} height={10} width={10} style={{fill: '#111'}}></rect>
-
-  // <rect x={50} y={height - 200} height={200} width={10} style={{fill: '#f00'}}></rect>
-  // <rect x={65} y={height - 220} height={220} width={10} style={{fill: '#f00'}}></rect>
-
-//
-//               <rect x={2} y={5} width={x.bandwidth()} height={barHeight(data[3].y)  }></rect>
-//
-//   {data.map( (d, i) => <rect key={i} x={d => x(d.data.x) y={d => d[1]} height={barHeight} width={barWidth} }></rect>
-// )}
-
-  // if (currentState.data.avg_lat_tilt !== undefined) {
-  //   let fullData = getGraphData(currentState)
-  //   let displayData = parseGraphData(fullData, currentState.timeInterval)
-  //   let graphWidth = getGraphWidth(currentState.timeInterval)
-  //   console.log('display data:', displayData);
-  //
-  //   // let barData = [
-  //   //   {
-  //   //     "name": "Series A",
-  //   //     "values": displayData
-  //   //   }
-  //   // ];
-  //
-  //
-  //   var data = [
-  //     { apples: 53245, oranges:	200 },
-  //     { apples: 28479, oranges:	200 },
-  //     { apples: 19697, oranges:	200 },
-  //     { apples: 24037, oranges:	200 },
-  //     { apples: 40245, oranges:	200 }
-  //   ];
-  //
-  //   // var width = 640
-  //   let height = 300
-  //   var radius = Math.min(graphWidth, height) / 2;
-  //
-  //   var color = d3.scaleOrdinal(d3.schemeCategory20);
-  //
-  //   var pie = d3.pie()
-  //       // .value(d => d[this.state.dataset])
-  //       // .value(d => d['apples'])
-  //       .value(d => d['y'])
-  //       // .value(d => {
-  //       //   console.log(d);
-  //       //   return  d[data.apples]
-  //       //   })
-  //       .sort(null);
-  //
-  //   var arc = d3.arc()
-  //       .innerRadius(radius - 100)
-  //       .outerRadius(radius - 20);
-  //
-  //   // var displayedData = pie(data);
-  //   var displayedData = pie(displayData);
-  //
-  //   return (
-  //     <div>
-  //
-  //       <svg width={graphWidth} height={height}>
-  //       	<g transform={"translate(" + graphWidth / 2 + "," + height / 2 + ")"}>
-  //         	{displayedData.map((slice, i) =>
-  //           	<path
-  //             	fill={color(i)}
-  //             	key={i}
-  //               d={arc(slice)} />
-  //           )}
-  //         </g>
-  //       </svg>
-  //     </div>
-  //   )
-  // }
-
 
   else {
     return (
