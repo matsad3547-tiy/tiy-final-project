@@ -16,11 +16,11 @@ let Seasonally = ({dispatch}) => {
 
 return (
   <form className="select" onSubmit={onSubmit}>
-    <button type="submit">Seasonally</button>
     <select className="dropdown" ref={node => input = node}>
       <option value="">Select a Season</option>
       {seasons.map ( (season, i) => <option value={season} key={i}>{season}</option>)}
     </select>
+    <button type="submit">Seasonally</button>
   </form>
 )}
 

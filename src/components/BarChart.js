@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import  {getCurrentState, select}  from '../data/sharedFunctions'
 import { monthObjs } from '../data/constants'
-import * as d3 from 'd3'
+import rd3 from 'react-d3'
 
 const getMonthAbvrs = (monthObjs) => {
   let abvrs = []
@@ -127,6 +127,8 @@ const getGraphWidth = (timeInt) => {
 
 const Graph = (state) => {
 
+  var BarChart = rd3.BarChart
+
   let currentState = getCurrentState(state)
   console.log(currentState.data.avg_lat_tilt);
 
@@ -160,6 +162,12 @@ const Graph = (state) => {
     x.domain(data.map(d => d.month))
     y.domain([0, d3.max(data, d => d.total,)]).nice()
 
+    let barData = [
+      {
+        'series': 'series1',
+        'values': 'data'
+      }
+    ]
 
     let barWidth = x.bandwidth()
     const barHeight = d => d * scaleFactor
@@ -175,31 +183,13 @@ const Graph = (state) => {
 
     return (
       <div>
-
-        <svg width={graphWidth} height={height} >
-        	<g transform={"translate(" + margin.left + ", " + margin.top + ")" } fill={z(1)} >
-            {data.map( (d, i) => <rect className="" key={i} x={xVal(d)} y={yVal(d.value)} height={barHeight(d.value)} width={barWidth}></rect>
-            )}
-          </g>
-          <g className="axis axis--x" transform={"translate(" + 40 + ", 250)"} textAnchor="middle" fontSize={fontSize} fontFamily="sans-serif">
-
-            {data.map((d, i) => <g key={i} className="tick" opacity="1" transform={"translate(" + xAxisX(d) + ",0)"}>
-            <line stroke={axisColor} y2="6" x1="0.5" x2="0.5"></line>
-            <text fill={axisColor} y="9" x="0.5" dy="0.71em">{d.month}</text></g>
-          )}
-          </g>
-
-          <g className="axis axis--y" fill="none" fontSize={fontSize} fontFamily="sans-serif" textAnchor="end">
-
-            {[...Array(yAxisTicks + 1)].map( (n, i) => <g key={i + 'a'} className="tick" opacity="1" transform={"translate(40," + tickY(i) + ")"}>
-              <line key={i + 'b'} stroke={axisColor} x2="-6" y1="0.5" y2="0.5"></line>
-              <text key={i + 'c'} fill={axisColor} x="-9" y="0.5" dy="0.32em">{i}</text>
-            </g>
-            )}
-          <text x="45" y="8" dy="0.35em" textAnchor="start" fill={axisColor} >{yAxisLabel}</text>
-        </g>
-
-        </svg>
+        <BarChart
+          data={barData}
+          width={width}
+          height={height}
+          fill={'#3182bd'}
+          title='Bar Chart'
+        />
       </div>
     )
   }

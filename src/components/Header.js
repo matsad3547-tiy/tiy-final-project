@@ -12,7 +12,8 @@ const Header = ({dispatch}) => {
 
   return (
     <div className="App-header">
-      <h2>US Solar Energy Resources</h2>
+      <img className="image" src="../../images/sun.png" role="presentation"></img>
+      <h1>US Solar Energy Resources</h1>
       <ul>
         <li onClick={onClick} id="home">Home</li>
         <li onClick={onClick} id="about">About</li>

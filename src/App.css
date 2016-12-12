@@ -11,6 +11,7 @@
 }
 
 h1, h2, h3, h4, label {
+  font-size: 1.25em;
   padding: .5em;
   margin: .4em;
 }
@@ -22,8 +23,6 @@ h1, h2, h3, h4, label {
 }
 
 .App-header {
-  /*position: fixed;
-  width: 100%;*/
   padding: .5em;
   min-height: 7em;
   background-color: #222;
@@ -46,6 +45,12 @@ h1, h2, h3, h4, label {
   margin: .5em;
   padding: .5em;
   background-color: darkslategray;
+}
+
+.image {
+  float: left;
+  margin: 2em;
+  width: 10em;
 }
 
 .body {
@@ -93,7 +98,6 @@ button {
 
 .about ul {
   margin: 0 3em 0 4em;
-
 }
 
 .footer{

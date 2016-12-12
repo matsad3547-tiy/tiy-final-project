@@ -16,11 +16,11 @@ let Monthly = ({dispatch}) => {
 
   return (
     <form className="select" onSubmit={onSubmit}>
-      <button type="submit" >Monthly</button>
       <select className="dropdown"ref={node => input = node}>
         <option>Select a Month</option>
         {months.map( (month, i) => <option key={i} value={month}>{month}</option>)}
       </select>
+      <button type="submit" >Monthly</button>
     </form>
   )
 }

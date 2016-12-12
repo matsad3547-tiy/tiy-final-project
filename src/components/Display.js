@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { getCurrentState, select } from '../data/sharedFunctions'
 import Graph from './Graph'
+import Chart from './Chart'
 
 const getGraphTitle = (currentState) => {
 
