@@ -58,13 +58,35 @@ const getSeasonMonths = (season) => {
   }
 }
 
+const getMonthNums = (monthAbvr) => {
+    let monthNum;
+    monthObjs.map( (obj, i) => {
+     for (let key in obj) {
+       if (obj[key] === monthAbvr) monthNum = i
+     }
+   })
+   return monthNum
+ }
+
+
+const makeDataGraphable = (arrOfPoints) => {
+   let graphablePoints = []
+   arrOfPoints.map( (point) => {
+     let newPoint = point
+     newPoint.x = getMonthNums(point.x)
+     graphablePoints.push(newPoint)
+   })
+   graphablePoints.push({x: 12, y: graphablePoints[graphablePoints.length - 1].y})
+    return graphablePoints
+ }
+
 const xyAssigner = (obj) => {
   let arr = []
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       let newObj = {}
-      newObj.month = key
-      newObj.value = obj[key]
+      newObj.x = key
+      newObj.y = obj[key]
       arr.push(newObj)
     }
   }
@@ -74,8 +96,8 @@ const xyAssigner = (obj) => {
 const sorter = (arr) => {
   let monthAbvrs = getMonthAbvrs(monthObjs)
   let newArr = arr.sort( (a, b) => {
-    let aI = (monthAbvrs.indexOf(a.month))
-    let bI = (monthAbvrs.indexOf(b.month))
+    let aI = (monthAbvrs.indexOf(a.x))
+    let bI = (monthAbvrs.indexOf(b.x))
     return aI - bI
   })
   return newArr
@@ -83,7 +105,7 @@ const sorter = (arr) => {
 
 const getGraphData = (currentState) => {
   let data = currentState.data.avg_lat_tilt
-  let fullData = sorter(xyAssigner(data.monthly))
+  let fullData = makeDataGraphable(sorter(xyAssigner(data.monthly)))
   return fullData
 }
 
@@ -148,36 +170,53 @@ const Graph = (state) => {
     let width = svgWidth - margin.left - margin.right
     let height = svgHeight - margin.top - margin.bottom
 
-    const x = d3.scaleBand()
-      .rangeRound([0, width])
-      .padding(0.1)
-      .align(0.1)
+    console.log(data);
 
-    const y = d3.scaleLinear()
-      .rangeRound([height, 0])
+    // const x = d3.scaleBand()
+    //   .rangeRound([0, width])
+    //   .padding(0.1)
+    //   .align(0.1)
+    //
+    // const y = d3.scaleLinear()
+    //   .rangeRound([height, 0])
+    //
+    // const z = d3.scaleOrdinal()
+    //   .range(['#FDB12B', '#444'])
+    //
+    // x.domain(data.map(d => d.month))
+    // y.domain([0, d3.max(data, d => d.total,)]).nice()
 
-    const z = d3.scaleOrdinal()
-      .range(['#FDB12B', '#444'])
-
-    x.domain(data.map(d => d.month))
-    y.domain([0, d3.max(data, d => d.total,)]).nice()
+    // let data = [
+    //   {'x': 0, 'y': 3.73},
+    //   {'x': 1, 'y': 4.54},
+    //   {'x': 2, 'y': 5.97},
+    //   {'x': 3, 'y': 6.25},
+    //   {'x': 4, 'y': 6.54},
+    //   {'x': 5, 'y': 6.72},
+    //   {'x': 6, 'y': 6.7},
+    //   {'x': 7, 'y': 6.59},
+    //   {'x': 8, 'y': 6.81},
+    //   {'x': 9, 'y': 6.17},
+    //   {'x': 10, 'y': 4.83},
+    //   {'x': 11, 'y': 3.7}
+    // ]
 
     let barData = [
       {
-        'series': 'series1',
-        'values': 'data'
+        'name': 'series1',
+        'values': data
       }
     ]
 
-    let barWidth = x.bandwidth()
-    const barHeight = d => d * scaleFactor
-    const xVal = d => x(d.month)
-    const yVal = d => height - barHeight(d) - margin.bottom
+    // let barWidth = x.bandwidth()
+    // const barHeight = d => d * scaleFactor
+    // const xVal = d => x(d.month)
+    // const yVal = d => height - barHeight(d) - margin.bottom
 
-    const axisColor = '#000'
-    const xAxisX = d => xVal(d) + barWidth / 2
-    let fontSize = 17
-    const tickY = (i) => (height - 31) - (i * scaleFactor)
+    // const axisColor = '#000'
+    // const xAxisX = d => xVal(d) + barWidth / 2
+    // let fontSize = 17
+    // const tickY = (i) => (height - 31) - (i * scaleFactor)
     const yAxisTicks = 8
     const yAxisLabel = 'kWh/m\u00B2/day'
 
