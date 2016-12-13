@@ -30,7 +30,7 @@ const getMonthAbv = (month) => {
 
 const findPoint = (arrOfPoints, keyVal) => {
   return arrOfPoints.find( (point) => {
-    return point.month === keyVal
+    return point.x === keyVal
   })
 }
 
@@ -58,27 +58,27 @@ const getSeasonMonths = (season) => {
   }
 }
 
-const getMonthNums = (monthAbvr) => {
-    let monthNum;
-    monthObjs.map( (obj, i) => {
-     for (let key in obj) {
-       if (obj[key] === monthAbvr) monthNum = i
-     }
-   })
-   return monthNum
- }
-
-
-const makeDataGraphable = (arrOfPoints) => {
-   let graphablePoints = []
-   arrOfPoints.map( (point) => {
-     let newPoint = point
-     newPoint.x = getMonthNums(point.x)
-     graphablePoints.push(newPoint)
-   })
-   graphablePoints.push({x: 12, y: graphablePoints[graphablePoints.length - 1].y})
-    return graphablePoints
- }
+// const getMonthNums = (monthAbvr) => {
+//     let monthNum;
+//     monthObjs.map( (obj, i) => {
+//      for (let key in obj) {
+//        if (obj[key] === monthAbvr) monthNum = i
+//      }
+//    })
+//    return monthNum
+//  }
+//
+//
+// const makeDataGraphable = (arrOfPoints) => {
+//    let graphablePoints = []
+//    arrOfPoints.map( (point) => {
+//      let newPoint = point
+//      newPoint.x = getMonthNums(point.x)
+//      graphablePoints.push(newPoint)
+//    })
+//    graphablePoints.push({x: 12, y: graphablePoints[graphablePoints.length - 1].y})
+//     return graphablePoints
+//  }
 
 const xyAssigner = (obj) => {
   let arr = []
@@ -105,7 +105,8 @@ const sorter = (arr) => {
 
 const getGraphData = (currentState) => {
   let data = currentState.data.avg_lat_tilt
-  let fullData = makeDataGraphable(sorter(xyAssigner(data.monthly)))
+  let fullData = sorter(xyAssigner(data.monthly))
+  // let fullData = makeDataGraphable(sorter(xyAssigner(data.monthly)))
   return fullData
 }
 
@@ -209,7 +210,7 @@ const Graph = (state) => {
     ]
 
     // let barWidth = x.bandwidth()
-    // const barHeight = d => d * scaleFactor
+    const barHeight = d => d * scaleFactor
     // const xVal = d => x(d.month)
     // const yVal = d => height - barHeight(d) - margin.bottom
 
@@ -226,8 +227,9 @@ const Graph = (state) => {
           data={barData}
           width={width}
           height={height}
-          fill={'#3182bd'}
-          title='Bar Chart'
+          fill={'#FDB12B'}
+          yAxisLabel={yAxisLabel}
+          yAxisLabelOffset={25}
         />
       </div>
     )

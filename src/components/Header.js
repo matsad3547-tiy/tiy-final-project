@@ -12,7 +12,7 @@ const Header = ({dispatch}) => {
 
   return (
     <div className="App-header">
-      <img className="image" src="../../images/sun.png" role="presentation"></img>
+      <img className="image" src="../../images/sun2.png" role="presentation"></img>
       <h1>US Solar Energy Resources</h1>
       <ul>
         <li onClick={onClick} id="home">Home</li>
