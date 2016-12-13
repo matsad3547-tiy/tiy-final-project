@@ -1,5 +1,7 @@
 @include responsive-font(5vw, 35px, 150px, 50px);
 
+import 'react-image-load/assets/style.css'
+
 @-ms-viewport{
   width: device-width;
 }
@@ -11,9 +13,10 @@
 }
 
 h1, h2, h3, h4, label {
-  font-size: 1.25em;
+  /*font-size: 1.25em;*/
   padding: .5em;
   margin: .4em;
+  text-align: center;
 }
 
 .App {
@@ -47,15 +50,33 @@ h1, h2, h3, h4, label {
   background-color: darkslategray;
 }
 
+.App-header li:hover {
+  text-decoration: underline;
+}
+
 .image {
-  float: left;
-  margin: 2em;
-  width: 10em;
+  position: absolute;
+  left: 2em;
+  margin: 1em;
+  width: 5em;
+}
+
+.App {
+  background-image: url("../images/solarPanels.jpeg");
+  background-attachment: fixed;
+  background-position: top 100px;
+  background-size: cover;
 }
 
 .body {
+  padding-top: 1.5em;
+  background-color: white;
+  width: 80%;
+  margin-left: 10%;
   margin-top: 1em;
+  margin-bottom: 1em;
   min-height: 30em;
+  border-radius: 2em;
 }
 
 .body li {
@@ -66,11 +87,6 @@ h1, h2, h3, h4, label {
 
 .App-intro {
   font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 li {
@@ -106,7 +122,6 @@ button {
 	color: black;
 	font-family:Arial;
 	font-weight:bold;
-	/*padding:6px 24px;*/
 	text-decoration:none;
 	text-shadow:0px 1px 0px #ffffff;
 }
@@ -119,6 +134,7 @@ button:hover {
 	background:linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed',GradientType=0);
 	background-color:#dfdfdf;
+  text-decoration: underline;
 }
 button:active {
 	position:relative;
@@ -130,21 +146,31 @@ select {
   padding: .2em;
 }
 
-/*option {
-  font-size: .8em;
-}*/
-
-
-.about {
-  margin: 1em 3em 0em 3em;
+.about, .links {
+  padding-top: 1.75em;
 }
 
 .about p {
   text-align: left;
+  margin: 1em 3em 0em 3em;
 }
 
 .about ul {
+  text-align: left;
   margin: 0 3em 0 4em;
+}
+
+.about li {
+  padding: .5em;
+}
+
+.links li {
+  padding: .5em;
+  display: block;
+}
+
+.links li:hover {
+  color: orange;
 }
 
 .footer{
@@ -152,7 +178,7 @@ select {
   background-color: darkslategray;
   color: white;
   padding: 10px;
-  margin-bottom: -10em;
+  /*margin-bottom: -10em;*/
 }
 
 .footer a {

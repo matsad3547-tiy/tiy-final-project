@@ -5,11 +5,6 @@ var stateInf = [
     coordinates: [32.7, -86.9]
   },
   {
-    state: 'Alaska',
-    abvr: 'AK',
-    coordinates: [64, -152.3]
-  },
-  {
     state: 'Arizona',
     abvr: 'AZ',
     coordinates: [34.3, -111.7]

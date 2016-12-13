@@ -214,5 +214,3 @@ const Graph = (state) => {
 }
 
 export default connect(getCurrentState)(Graph)
-
-// new Array(9)

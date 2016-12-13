@@ -1,6 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { selectPage } from '../actions/actions'
+import Img from 'react-image-load'
+
+const HeaderImage = () => {
+  return (
+    <Img
+      className="image"
+      rotate={90}
+      src={require("../../images/sun3.png")}
+    />
+  )
+}
+
 
 const Header = ({dispatch}) => {
 
@@ -12,7 +24,7 @@ const Header = ({dispatch}) => {
 
   return (
     <div className="App-header">
-      <img className="image" src="../../images/sun2.png" role="presentation"></img>
+      <HeaderImage />
       <h1>US Solar Energy Resources</h1>
       <ul>
         <li onClick={onClick} id="home">Home</li>
