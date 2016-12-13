@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux'
 import  {getCurrentState, select}  from '../data/sharedFunctions'
 import { monthObjs } from '../data/constants'
-import { setGraphParams } from '../actions/actions'
-import { store } from '../index'
 import * as d3 from 'd3'
 
 const getMonthAbvrs = (monthObjs) => {
@@ -127,38 +125,26 @@ const getGraphWidth = (timeInt) => {
   }
 }
 
-let Graph = (state, {dispatch}) => {
+const Graph = (state) => {
 
   let currentState = getCurrentState(state)
+  console.log(currentState.data.avg_lat_tilt);
 
   if (currentState.data.avg_lat_tilt !== undefined) {
     let fullData = getGraphData(currentState)
-    let graphData = parseGraphData(fullData, currentState.timeInterval)
-    // console.log(graphData);
+    let data = parseGraphData(fullData, currentState.timeInterval)
     let graphWidth = getGraphWidth(currentState.timeInterval)
 
-    let graphParams = {
-      scaleFactor: 30,
-      margin: {top: 20, right: 0, bottom: 0, left: 40},
-      svgWidth: graphWidth,
-      svgHeight: 300,
-      fillColor: '#FDB12B',
-      graphData: graphData
-    }
+    let scaleFactor = 30
 
-    // dispatch(setGraphParams(graphParams))
+    let svgWidth = graphWidth
 
-    const dispatchGraphParams = (params) => dispatch(setGraphParams(params))
+    let svgHeight = 350
 
-    let scaleFactor = graphParams.scaleFactor
+    let margin = {top: 20, right: 20, bottom: 50, left: 40}
 
-    let width = graphParams.svgWidth - graphParams.margin.left
-    //
-    let height = graphParams.svgHeight - graphParams.margin.top
-    // console.log('height:', height);
-
-    let data = graphParams.graphData
-    // console.log('Graph data:', data);
+    let width = svgWidth - margin.left - margin.right
+    let height = svgHeight - margin.top - margin.bottom
 
     const x = d3.scaleBand()
       .rangeRound([0, width])
@@ -169,12 +155,13 @@ let Graph = (state, {dispatch}) => {
       .rangeRound([height, 0])
 
     x.domain(data.map(d => d.month))
+    // y.domain([0, d3.max(data, d => d.total,)]).nice()
 
     let fillColor = '#FDB12B'
     let barWidth = x.bandwidth()
     const barHeight = d => d * scaleFactor
     const xVal = d => x(d.month)
-    const yVal = d => height - barHeight(d)
+    const yVal = d => height - barHeight(d) - margin.bottom
 
     const axisColor = '#000'
     const xAxisX = d => xVal(d) + barWidth / 2
@@ -183,15 +170,26 @@ let Graph = (state, {dispatch}) => {
     const yAxisTicks = 8
     const yAxisLabel = 'kWh/m\u00B2/day'
 
+    const onMouseEnter = (d, i) => {
+      // d3.select(this).attr({
+      //   fill: "red",
+      // });
+      console.log('I moused in, bitch!', d, i);
+    }
+
+    const onMouseLeave = () => {
+      console.log('I moused out, motherfucker!');
+    }
+
     return (
       <div>
 
-        <svg width={graphWidth} height={graphParams.svgHeight} >
-        	<g transform={"translate(" + graphParams.margin.left + ", " + -30 + ")" } >
-            {data.map( (d, i) => <rect  className="" key={i} x={xVal(d)} y={yVal(d.value)} height={barHeight(d.value)} width={barWidth} fill={fillColor}></rect>
+        <svg width={graphWidth} height={height} >
+        	<g transform={"translate(" + margin.left + ", " + margin.top + ")" }  >
+            {data.map( (d, i) => <rect onMouseEnter={onMouseEnter(d, i)} className="" key={i} x={xVal(d)} y={yVal(d.value)} height={barHeight(d.value)} width={barWidth} fill={fillColor}></rect>
             )}
           </g>
-          <g className="axis axis--x" transform={"translate(" + graphParams.margin.left + ", " + 250 + ")"} textAnchor="middle" fontSize={fontSize} fontFamily="sans-serif">
+          <g className="axis axis--x" transform={"translate(" + 40 + ", 250)"} textAnchor="middle" fontSize={fontSize} fontFamily="sans-serif">
 
             {data.map((d, i) => <g key={i} className="tick" opacity="1" transform={"translate(" + xAxisX(d) + ",0)"}>
             <line stroke={axisColor} y2="6" x1="0.5" x2="0.5"></line>
@@ -201,7 +199,7 @@ let Graph = (state, {dispatch}) => {
 
           <g className="axis axis--y" fill="none" fontSize={fontSize} fontFamily="sans-serif" textAnchor="end">
 
-            {[...Array(yAxisTicks + 1)].map( (n, i) => <g key={i + 'a'} className="tick" opacity="1" transform={"translate(" + graphParams.margin.left + "," + tickY(i) + ")"}>
+            {[...Array(yAxisTicks + 1)].map( (n, i) => <g key={i + 'a'} className="tick" opacity="1" transform={"translate(40," + tickY(i) + ")"}>
               <line key={i + 'b'} stroke={axisColor} x2="-6" y1="0.5" y2="0.5"></line>
               <text key={i + 'c'} fill={axisColor} x="-9" y="0.5" dy="0.32em">{i}</text>
             </g>
@@ -223,6 +221,8 @@ let Graph = (state, {dispatch}) => {
   }
 }
 
-Graph = connect(getCurrentState)(Graph)
+export default connect(getCurrentState)(Graph)
 
-export default Graph
+// <style>{rect: hover{
+//   opacity: 0.5;
+// }}        </style>

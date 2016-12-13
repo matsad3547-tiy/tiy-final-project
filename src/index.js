@@ -7,7 +7,7 @@ import {createStore, applyMiddleware, compose} from 'redux'
 import dataService from './dataService';
 import {combinedReducers} from './reducers/reducers'
 
-let store = createStore(combinedReducers,{}, compose(applyMiddleware(dataService), window.devToolsExtension
+export let store = createStore(combinedReducers,{}, compose(applyMiddleware(dataService), window.devToolsExtension
 	? window.devToolsExtension() : f => f))
 
 ReactDOM.render(
