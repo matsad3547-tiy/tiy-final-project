@@ -154,13 +154,10 @@ const Graph = (state) => {
     const y = d3.scaleLinear()
       .rangeRound([height, 0])
 
-    const z = d3.scaleOrdinal()
-      .range(['#FDB12B', '#444'])
-
     x.domain(data.map(d => d.month))
     y.domain([0, d3.max(data, d => d.total,)]).nice()
 
-
+    let fillColor = '#FDB12B'
     let barWidth = x.bandwidth()
     const barHeight = d => d * scaleFactor
     const xVal = d => x(d.month)
@@ -177,8 +174,8 @@ const Graph = (state) => {
       <div>
 
         <svg width={graphWidth} height={height} >
-        	<g transform={"translate(" + margin.left + ", " + margin.top + ")" } fill={z(1)} >
-            {data.map( (d, i) => <rect className="" key={i} x={xVal(d)} y={yVal(d.value)} height={barHeight(d.value)} width={barWidth}></rect>
+        	<g transform={"translate(" + margin.left + ", " + margin.top + ")" }  >
+            {data.map( (d, i) => <rect onMouseEnter="onMouseEnter" className="" key={i} x={xVal(d)} y={yVal(d.value)} height={barHeight(d.value)} width={barWidth} fill={fillColor}></rect>
             )}
           </g>
           <g className="axis axis--x" transform={"translate(" + 40 + ", 250)"} textAnchor="middle" fontSize={fontSize} fontFamily="sans-serif">

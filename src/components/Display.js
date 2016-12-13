@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { getCurrentState, select } from '../data/sharedFunctions'
 import Graph from './Graph'
-import BarChart from './BarChart'
+// import BarChart from './BarChart'
 
 const getGraphTitle = (currentState) => {
 
@@ -33,7 +33,7 @@ const Display = (state) => {
   return (
     <div className="graph">
       <h3>{title}</h3>
-      <BarChart />
+      <Graph />
     </div>
   )
 }
