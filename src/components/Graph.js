@@ -140,7 +140,11 @@ let Graph = (state) => {
       svgWidth: graphWidth,
       svgHeight: 300,
       fillColor: '#FDB12B',
-      graphData: graphData
+      axisColor: '#000',
+      yAxisTicks: 8,
+      yAxisLabel: 'kWh/m\u00B2/day',
+      graphData: graphData,
+      fontSize: 17
     }
 
     return (
