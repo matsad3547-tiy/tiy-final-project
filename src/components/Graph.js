@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import  {getCurrentState, select}  from '../data/sharedFunctions'
 import { monthObjs } from '../data/constants'
-import { setGraphParams } from '../actions/actions'
-import { store } from '../index'
+import DispatchGraphParams from '../containers/DispatchGraphParams'
+// import { setGraphParams } from '../actions/actions'
 import * as d3 from 'd3'
 
 const getMonthAbvrs = (monthObjs) => {
@@ -127,7 +127,21 @@ const getGraphWidth = (timeInt) => {
   }
 }
 
-let Graph = (state, {dispatch}) => {
+// let dispatchGraphParams = (graphData, graphWidth, {dispatch}) => {
+//
+//   let graphParams = {
+//     scaleFactor: 30,
+//     margin: {top: '20vw', right: 0, bottom: 0, left: '40'},
+//     svgWidth: graphWidth,
+//     svgHeight: '300vw',
+//     fillColor: '#FDB12B',
+//     graphData: graphData
+//   }
+//
+//   dispatch(setGraphParams(graphParams))
+// }
+
+let Graph = (state) => {
 
   let currentState = getCurrentState(state)
 
@@ -137,6 +151,8 @@ let Graph = (state, {dispatch}) => {
     // console.log(graphData);
     let graphWidth = getGraphWidth(currentState.timeInterval)
 
+    // DispatchGraphParams(graphData, graphWidth)
+
     let graphParams = {
       scaleFactor: 30,
       margin: {top: 20, right: 0, bottom: 0, left: 40},
@@ -145,10 +161,6 @@ let Graph = (state, {dispatch}) => {
       fillColor: '#FDB12B',
       graphData: graphData
     }
-
-    // dispatch(setGraphParams(graphParams))
-
-    const dispatchGraphParams = (params) => dispatch(setGraphParams(params))
 
     let scaleFactor = graphParams.scaleFactor
 
@@ -224,5 +236,9 @@ let Graph = (state, {dispatch}) => {
 }
 
 Graph = connect(getCurrentState)(Graph)
+
+// dispatchGraphParams = connect()(dispatchGraphParams)
+
+
 
 export default Graph
