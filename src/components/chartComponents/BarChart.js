@@ -17,9 +17,9 @@ const BarChart = (props: {graphParams: graphParams}) => {
   let yAxisLabel = props.graphParams.yAxisLabel
   let yAxisTicks = props.graphParams.yAxisTicks
 
-  let width = svgWidth - margin.left
+  let width = svgWidth - margin.left - margin.right
 
-  let height = svgHeight - margin.top
+  let height = svgHeight - margin.top - margin.bottom
 
   const x = d3.scaleBand()
   .rangeRound([0, width])
@@ -35,9 +35,16 @@ const BarChart = (props: {graphParams: graphParams}) => {
   const xAxisX = d => xVal(d) + barWidth / 2
   const tickY = (i) => (height - 31) - (i * scaleFactor)
 
+  let viewBox = [0, 0, width + 50, height].join(' ')
+
   return (
     <div>
-      <svg width={svgWidth} height={svgHeight} >
+      <svg
+        height={height}
+        width="100%"
+        viewBox={viewBox}
+        preserveAspectRatio="xMaxYMax meet"
+        >
         <Bars
           marginLeft={margin.left}
           data={data}
@@ -72,3 +79,5 @@ const BarChart = (props: {graphParams: graphParams}) => {
 }
 
 export default BarChart
+
+// width={svgWidth} height={svgHeight}

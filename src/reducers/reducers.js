@@ -40,14 +40,6 @@ export const data = (state = {}, action) => {
   }
   return state;
 }
-// 
-// export const graphParams = (state = {}, action) => {
-//   console.log(action.graphParams);
-//   if (action.graphParams !== undefined) {
-//     return action.graphParams
-//   }
-//   return state;
-// }
 
 export const combinedReducers = combineReducers({
   pageSelected,

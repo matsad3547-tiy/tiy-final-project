@@ -110,18 +110,18 @@ const parseGraphData = (dataArr, timeInt) => {
   }
 }
 
-const getGraphWidth = (timeInt) => {
+const getGraphSize = (timeInt) => {
   let selector = select(timeInt)
-  let graphWidth = 0
+  let graphSize = 0
   switch (selector) {
     case 'monthly':
-      return graphWidth = 200
+      return graphSize = [600, 300]
 
     case 'seasonally':
-      return graphWidth = 300
+      return graphSize = [750, 300]
 
     default:
-    return graphWidth = 750
+    return graphSize = [750, 300]
   }
 }
 
@@ -132,24 +132,26 @@ let Graph = (state) => {
   if (currentState.data.avg_lat_tilt !== undefined) {
     let fullData = getGraphData(currentState)
     let graphData = parseGraphData(fullData, currentState.timeInterval)
-    let graphWidth = getGraphWidth(currentState.timeInterval)
+    let graphSize = getGraphSize(currentState.timeInterval)
 
     let graphParams = {
       scaleFactor: 30,
       margin: {top: 20, right: 0, bottom: 0, left: 40},
-      svgWidth: graphWidth,
-      svgHeight: 300,
+      svgWidth: graphSize[0],
+      svgHeight: graphSize[1],
       fillColor: '#FDB12B',
       axisColor: '#000',
       yAxisTicks: 8,
       yAxisLabel: 'kWh/m\u00B2/day',
-      graphData: graphData,
-      fontSize: 17
+      fontSize: 17,
+      graphData: graphData
     }
 
     return (
       <div className="graph">
-        <BarChart graphParams={graphParams} />
+
+          <BarChart graphParams={graphParams} />
+
       </div>
     )
   }

@@ -18,10 +18,3 @@ export const selectPage = (pageSelected) => {
     pageSelected
   }
 }
-
-// export const setGraphParams = (graphParams) => {
-//   return {
-//     type: 'SET_GRAPH_PARAMS',
-//     graphParams
-//   }
-// }
