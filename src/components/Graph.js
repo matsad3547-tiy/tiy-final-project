@@ -2,9 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import  {getCurrentState, select}  from '../data/sharedFunctions'
 import { monthObjs } from '../data/constants'
-import { setGraphParams } from '../actions/actions'
-import { store } from '../index'
-import * as d3 from 'd3'
+import BarChart from './chartComponents/BarChart'
 
 const getMonthAbvrs = (monthObjs) => {
   let abvrs = []
@@ -112,104 +110,48 @@ const parseGraphData = (dataArr, timeInt) => {
   }
 }
 
-const getGraphWidth = (timeInt) => {
+const getGraphSize = (timeInt) => {
   let selector = select(timeInt)
-  let graphWidth = 0
+  let graphSize = 0
   switch (selector) {
     case 'monthly':
-      return graphWidth = 200
+      return graphSize = [600, 300]
 
     case 'seasonally':
-      return graphWidth = 300
+      return graphSize = [750, 300]
 
     default:
-    return graphWidth = 750
+    return graphSize = [750, 300]
   }
 }
 
-let Graph = (state, {dispatch}) => {
+let Graph = (state) => {
 
   let currentState = getCurrentState(state)
 
   if (currentState.data.avg_lat_tilt !== undefined) {
     let fullData = getGraphData(currentState)
     let graphData = parseGraphData(fullData, currentState.timeInterval)
-    // console.log(graphData);
-    let graphWidth = getGraphWidth(currentState.timeInterval)
+    let graphSize = getGraphSize(currentState.timeInterval)
 
     let graphParams = {
       scaleFactor: 30,
       margin: {top: 20, right: 0, bottom: 0, left: 40},
-      svgWidth: graphWidth,
-      svgHeight: 300,
+      svgWidth: graphSize[0],
+      svgHeight: graphSize[1],
       fillColor: '#FDB12B',
+      axisColor: '#000',
+      yAxisTicks: 8,
+      yAxisLabel: 'kWh/m\u00B2/day',
+      fontSize: 17,
       graphData: graphData
     }
 
-    // dispatch(setGraphParams(graphParams))
-
-    const dispatchGraphParams = (params) => dispatch(setGraphParams(params))
-
-    let scaleFactor = graphParams.scaleFactor
-
-    let width = graphParams.svgWidth - graphParams.margin.left
-    //
-    let height = graphParams.svgHeight - graphParams.margin.top
-    // console.log('height:', height);
-
-    let data = graphParams.graphData
-    // console.log('Graph data:', data);
-
-    const x = d3.scaleBand()
-      .rangeRound([0, width])
-      .padding(0.1)
-      .align(0.1)
-
-    const y = d3.scaleLinear()
-      .rangeRound([height, 0])
-
-    x.domain(data.map(d => d.month))
-
-    let fillColor = '#FDB12B'
-    let barWidth = x.bandwidth()
-    const barHeight = d => d * scaleFactor
-    const xVal = d => x(d.month)
-    const yVal = d => height - barHeight(d)
-
-    const axisColor = '#000'
-    const xAxisX = d => xVal(d) + barWidth / 2
-    let fontSize = 17
-    const tickY = (i) => (height - 31) - (i * scaleFactor)
-    const yAxisTicks = 8
-    const yAxisLabel = 'kWh/m\u00B2/day'
-
     return (
-      <div>
+      <div className="graph">
 
-        <svg width={graphWidth} height={graphParams.svgHeight} >
-        	<g transform={"translate(" + graphParams.margin.left + ", " + -30 + ")" } >
-            {data.map( (d, i) => <rect  className="" key={i} x={xVal(d)} y={yVal(d.value)} height={barHeight(d.value)} width={barWidth} fill={fillColor}></rect>
-            )}
-          </g>
-          <g className="axis axis--x" transform={"translate(" + graphParams.margin.left + ", " + 250 + ")"} textAnchor="middle" fontSize={fontSize} fontFamily="sans-serif">
+          <BarChart graphParams={graphParams} />
 
-            {data.map((d, i) => <g key={i} className="tick" opacity="1" transform={"translate(" + xAxisX(d) + ",0)"}>
-            <line stroke={axisColor} y2="6" x1="0.5" x2="0.5"></line>
-            <text fill={axisColor} y="9" x="0.5" dy="0.71em">{d.month}</text></g>
-          )}
-          </g>
-
-          <g className="axis axis--y" fill="none" fontSize={fontSize} fontFamily="sans-serif" textAnchor="end">
-
-            {[...Array(yAxisTicks + 1)].map( (n, i) => <g key={i + 'a'} className="tick" opacity="1" transform={"translate(" + graphParams.margin.left + "," + tickY(i) + ")"}>
-              <line key={i + 'b'} stroke={axisColor} x2="-6" y1="0.5" y2="0.5"></line>
-              <text key={i + 'c'} fill={axisColor} x="-9" y="0.5" dy="0.32em">{i}</text>
-            </g>
-            )}
-          <text x="45" y="8" dy="0.35em" textAnchor="start" fill={axisColor} >{yAxisLabel}</text>
-        </g>
-
-        </svg>
       </div>
     )
   }

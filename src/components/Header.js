@@ -10,7 +10,7 @@ const Header = ({dispatch}) => {
   }
 
   return (
-    <div className="App-header">
+    <div className="header">
       <img className="image" src={require("../../images/sun3.png")}></img>
       <h1>US Solar Energy Resources</h1>
       <ul>
