@@ -1,18 +1,23 @@
 import React from 'react';
 import * as d3 from 'd3'
+import Bars from './Bars'
+
 
 const BarChart = (props: {graphParams: graphParams}) => {
 
   let scaleFactor = props.graphParams.scaleFactor
-
-  let width = props.graphParams.svgWidth - props.graphParams.margin.left
-  //
-  let height = props.graphParams.svgHeight - props.graphParams.margin.top
-  // console.log('height:', height);
-
-  let data = props.graphParams.graphData
-  // console.log('Graph data:', data);
+  let margin = props.graphParams.margin
+  let svgWidth = props.graphParams.svgWidth
+  let svgHeight = props.graphParams.svgHeight
   let fillColor = props.graphParams.fillColor
+  let data = props.graphParams.graphData
+
+  let width = svgWidth - margin.left
+
+  let height = svgHeight - margin.top
+
+
+
 
   const x = d3.scaleBand()
   .rangeRound([0, width])
@@ -24,7 +29,6 @@ const BarChart = (props: {graphParams: graphParams}) => {
 
   x.domain(data.map(d => d.month))
 
-  // let fillColor = '#FDB12B'
   let barWidth = x.bandwidth()
   const barHeight = d => d * scaleFactor
   const xVal = d => x(d.month)
@@ -39,11 +43,17 @@ const BarChart = (props: {graphParams: graphParams}) => {
 
   return (
     <div>
-      <svg width={props.graphParams.svgWidth} height={props.graphParams.svgHeight} >
-        <g transform={"translate(" + props.graphParams.margin.left + ", " + -30 + ")" } >
-          {data.map( (d, i) => <rect  className="" key={i} x={xVal(d)} y={yVal(d.value)} height={barHeight(d.value)} width={barWidth} fill={fillColor}></rect>
-      )}
-    </g>
+      <svg width={svgWidth} height={svgHeight} >
+        <Bars
+          marginLeft={margin.left}
+          data={data}
+          height={height}
+          width={width}
+          scaleFactor={scaleFactor}
+          fillColor={fillColor}
+          />
+
+
     <g className="axis axis--x" transform={"translate(" + props.graphParams.margin.left + ", " + 250 + ")"} textAnchor="middle" fontSize={fontSize} fontFamily="sans-serif">
 
       {data.map((d, i) => <g key={i} className="tick" opacity="1" transform={"translate(" + xAxisX(d) + ",0)"}>
