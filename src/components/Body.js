@@ -26,7 +26,7 @@ const TimeIntervalSelect = () => (
 )
 
 const Body = (state) => {
-  
+
   let currentState = getCurrentState(state)
 
   if (currentState.pageSelected === 'about') {
@@ -34,7 +34,7 @@ const Body = (state) => {
       <About />
     )
   }
-  if (currentState.pageSelected === 'links') {
+  else if (currentState.pageSelected === 'links') {
     return (
       <Links />
     )

@@ -6,6 +6,7 @@ const Header = ({dispatch}) => {
 
   const onClick = (clicked_id, e) => {
     let id = clicked_id.target.id
+    console.log(e);
     e.preventDefault()
     dispatch(selectPage(id))
   }
