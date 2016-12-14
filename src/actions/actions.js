@@ -19,9 +19,9 @@ export const selectPage = (pageSelected) => {
   }
 }
 
-export const setGraphParams = (graphParams) => {
-  return {
-    type: 'SET_GRAPH_PARAMS',
-    graphParams
-  }
-}
+// export const setGraphParams = (graphParams) => {
+//   return {
+//     type: 'SET_GRAPH_PARAMS',
+//     graphParams
+//   }
+// }
